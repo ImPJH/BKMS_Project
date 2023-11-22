@@ -25,7 +25,6 @@ from folium.raster_layers import ImageOverlay
 from imageio import imread
 
 from streamlit_extras.switch_page_button import switch_page
-from streamlit_extras.switch_page_button import switch_page
 from st_pages import Page, show_pages, hide_pages
 
 #Layout
