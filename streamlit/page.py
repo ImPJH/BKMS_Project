@@ -24,12 +24,27 @@ from jinja2 import Template
 from folium.raster_layers import ImageOverlay
 from imageio import imread
 
+from streamlit_extras.switch_page_button import switch_page
+from streamlit_extras.switch_page_button import switch_page
+from st_pages import Page, show_pages, hide_pages
 
 #Layout
 st.set_page_config(
     page_title="BSAFE",
     layout="wide",
     initial_sidebar_state="expanded")
+
+
+show_pages([
+    Page("page.py","Main"),
+    Page("finallogin.py","login")
+])
+
+hide_pages(['login', 'Main'])
+col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15 = st.columns(15)
+if col15.button('login'):
+    switch_page('login')
+
 
 #Data Pull and Functions
 st.markdown("""
@@ -50,7 +65,6 @@ def pull_clean():
     master_zip=pd.read_csv('./reference/MASTER_ZIP.csv',dtype={'ZCTA5': str})
     master_city=pd.read_csv('./reference/MASTER_CITY.csv',dtype={'ZCTA5': str})
     return master_zip, master_city
-
 
 
 #Options Menu
