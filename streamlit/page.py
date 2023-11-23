@@ -11,7 +11,7 @@ import json
 import requests
 from streamlit_lottie import st_lottie
 import pydeck as pdk
-import snowflake.connector
+# import snowflake.connector
 
 import geopandas as gpd
 
@@ -22,7 +22,7 @@ from streamlit_folium import st_folium
 from jinja2 import Template
 
 from folium.raster_layers import ImageOverlay
-from imageio import imread
+# from imageio import imread
 
 from streamlit_extras.switch_page_button import switch_page
 from st_pages import Page, show_pages, hide_pages
