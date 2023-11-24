@@ -64,7 +64,7 @@ def load_lottiefile(filepath: str):
 
 with st.sidebar:
     selected = option_menu('BSAFE', ["Main", 'Search','Team'],
-        icons=['house','search','people'],menu_icon='airplane', default_index=2)
+        icons=['house','search','people'],menu_icon='airplane', default_index=0)
     lottie = load_lottiefile("similo3.json")
     st_lottie(lottie,key='loc')
 
