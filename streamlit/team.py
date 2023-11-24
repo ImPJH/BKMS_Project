@@ -45,6 +45,8 @@ if selected == "Team":
     with st.container():
         col1,col2=st.columns(2)
         col1.write('')
+        col1.write('')
+        col1.write('')
         col1.subheader('김서린')
         col1.write('M.S. Student @ SNU GSDS')
         col2.image('./photo/sr.png', width = 300)
