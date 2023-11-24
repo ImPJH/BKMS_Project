@@ -30,8 +30,7 @@ if selected == "Main":
 if selected == "Team":
     switch_page("Team")
 
-
-st.subheader('Search Your Airbnb!') #위에 부제목
+st.title('Search Your Airbnb!') #위에 부제목
 
 #neighbourhood, accommodation table 가져와서 필요한 column만 쓰는거 sql문으로 구현해야됨?
 
