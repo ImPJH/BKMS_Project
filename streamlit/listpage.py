@@ -122,3 +122,16 @@ if id:
     st.write('Review Cleanliness: '+str(review_cleanliness)+"/5")
     st.write('Review Check-in: '+str(review_checkin)+"/5")
     st.write('Review Location: '+str(review_location)+"/5")
+
+    st.divider()
+
+    st.header('Crime Information')
+    tab1, tab2, tab3, tab4 = st.tabs(['Overall', 'Date', 'Crime Type', 'Victim'])
+    with tab1:
+        display.crime_info(id, 'overall')
+    with tab2:
+        display.crime_info(id, 'date')
+    with tab3:
+        display.crime_info(id, 'crime_type')
+    with tab4:
+        display.crime_info(id, 'victim')
