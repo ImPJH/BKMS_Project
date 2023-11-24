@@ -5,6 +5,31 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 import apis.neighbourhood_api as neighbourhood_api
+from streamlit_lottie import st_lottie
+from streamlit_option_menu import option_menu
+from streamlit_extras.switch_page_button import switch_page
+from st_pages import Page, show_pages, hide_pages
+import json
+
+hide_pages(['login', 'Main', 'Team','Search'])
+
+@st.cache_data
+def load_lottiefile(filepath: str):
+    with open(filepath,"r") as f:
+        return json.load(f)
+
+with st.sidebar:
+    selected = option_menu('BSAFE', ["Main", 'Search','Team'],
+        icons=['play-btn','search','info-circle'],menu_icon='intersect', default_index=1)
+    lottie = load_lottiefile("similo3.json")
+    st_lottie(lottie,key='loc')
+
+if selected == "Main":
+    switch_page('Main')
+
+if selected == "Team":
+    switch_page("Team")
+
 
 st.subheader('Search Your Airbnb!') #위에 부제목
 

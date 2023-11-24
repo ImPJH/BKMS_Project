@@ -3,14 +3,13 @@ import bcrypt
 import psycopg2
 from st_pages import Page, show_pages, hide_pages
 from streamlit_extras.switch_page_button import switch_page
+hide_pages(['Team'])
 
 show_pages([
     Page("page.py","Main"),
     Page("login.py","login"),
     Page("team.py","Team")
 ])
-
-hide_pages(['Team'])
 
 def create_users_table():
     conn = psycopg2.connect(
@@ -70,9 +69,6 @@ def check_user(username, password):
     return bcrypt.checkpw(password.encode('utf-8'), result[0].encode('utf-8'))
 
 create_users_table()  # 앱이 시작될 때 사용자 테이블을 생성합니다.
-
-
-st.set_page_config(page_title="For Your Safe Journey", page_icon=":airplane:")
 
 # 사용자 정보를 저장하는 간단한 딕셔너리
 users = {
