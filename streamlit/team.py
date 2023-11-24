@@ -28,7 +28,6 @@ with st.sidebar:
     st_lottie(lottie,key='loc')
 
 
-
 if selected == "Main":
     switch_page('Main')
 
