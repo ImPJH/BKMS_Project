@@ -35,10 +35,11 @@ st.set_page_config(
 show_pages([
     Page("page.py","Main"),
     Page("login.py","login"),
-    Page("team.py","Team")
+    Page("team.py","Team"),
+    Page("search.py","Search")
 ])
 
-hide_pages(['login', 'Main', 'Team'])
+hide_pages(['login', 'Main', 'Team','Search'])
 col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15 = st.columns(15)
 if col15.button('login'):
     switch_page('login')
@@ -151,7 +152,7 @@ if selected=="Main":
     m
 #Search Page
 if selected=='Search':
-    pass
-#About Page
+    switch_page('Search')
+
 if selected=='Team':
     switch_page('Team')
