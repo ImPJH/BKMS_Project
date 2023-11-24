@@ -29,7 +29,6 @@ from st_pages import Page, show_pages, hide_pages
 st.set_page_config(
     page_title="BSAFE",
     layout="wide",
-    page_icon="🫂",
     initial_sidebar_state="expanded")
 
 
@@ -37,10 +36,11 @@ show_pages([
     Page("page.py","Main"),
     Page("login.py","login"),
     Page("team.py","Team"),
-    Page("search.py","Search")
+    Page("search.py","Search"),
+    Page("listpage.py","Listpage")
 ])
 
-hide_pages(['login', 'Main', 'Team','Search'])
+hide_pages(['login', 'Main', 'Team','Search',"Listpage"])
 col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15 = st.columns(15)
 if col15.button('login'):
     switch_page('login')
@@ -63,7 +63,7 @@ def load_lottiefile(filepath: str):
 #Options Menu
 with st.sidebar:
     selected = option_menu('BSAFE', ["Main", 'Search','Team'], 
-        icons=['house','search','people'],menu_icon='airplane', default_index=0)
+        icons=['play-btn','search','info-circle'],menu_icon='intersect', default_index=0)
     lottie = load_lottiefile("similo3.json")
     st_lottie(lottie,key='loc')
 
@@ -71,7 +71,7 @@ with st.sidebar:
 if selected=="Main":
     #Header
     st.title('For Your Safe Journey')
-    st.subheader('Find a safe Airbnb that meets your expectations.')
+    st.subheader('A new tool to find safe Airbnb that matches your demand.')
 
     st.divider()
 
