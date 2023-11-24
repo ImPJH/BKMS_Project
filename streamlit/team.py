@@ -5,6 +5,12 @@ from streamlit_extras.switch_page_button import switch_page
 from st_pages import Page, show_pages, hide_pages
 import json
 
+st.set_page_config(
+    page_title="TEAM",
+    layout="wide",
+    page_icon="🫂",
+    initial_sidebar_state="expanded")
+
 hide_pages(['login', 'Main', 'Team','Search'])
 
 show_pages([
@@ -39,55 +45,93 @@ if selected == "Team":
     with st.container():
         col1,col2=st.columns(2)
         col1.write('')
-        col1.write('')
-        col1.write('')
         col1.subheader('김서린')
         col1.write('M.S. Student @ SNU GSDS')
-        col1.write('[github](https://github.com/Seorin-Kim)')
         col2.image('./photo/mung.jpeg', width = 300)
-
+        image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+        github_url = "https://github.com/Seorin-Kim"
+        logo_url = 'https://icons.veryicon.com/png/o/food--drinks/pakd/mail-218.png'
+        email = 'seorin1116@snu.ac.kr'
+        col1.markdown(
+            f'<div style="display: flex; align-items: center;">'
+            f'<a href="{github_url}" target="_blank" style="margin-right: 10px;"><img src="{image_url}" alt="Repo" width="25"/></a>'
+            f'<a href="mailto:{email}"><img src="{logo_url}" alt="Email" width="26"/></a>'
+            f'</div>',
+            unsafe_allow_html=True
+        )
     st.divider()
 
     with st.container():
         col1,col2=st.columns(2)
         col1.image('./photo/mungmung.jpeg', width = 270)
-        col2.write('')
-        col2.write('')
         col2.write('')
         col2.subheader('박선호')
         col2.write('M.S. Student @ SNU GSDS')
-        col2.write('[github](https://github.com/preferpark99)')
-
+        image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+        github_url = "https://github.com/preferpark99"
+        logo_url = 'https://icons.veryicon.com/png/o/food--drinks/pakd/mail-218.png'
+        email = 'preferpark99@snu.ac.kr'
+        col2.markdown(
+            f'<div style="display: flex; align-items: center;">'
+            f'<a href="{github_url}" target="_blank" style="margin-right: 10px;"><img src="{image_url}" alt="Repo" width="25"/></a>'
+            f'<a href="mailto:{email}"><img src="{logo_url}" alt="Email" width="26"/></a>'
+            f'</div>',
+            unsafe_allow_html=True
+        )
     st.divider()
     with st.container():
         col1,col2=st.columns(2)
         col1.write('')
-        col1.write('')
-        col1.write('')
         col1.subheader('박지형')
         col1.write('M.S. Student @ SNU GSDS')
-        col1.write('[github](https://github.com/ImPJH)')
         col2.image('./photo/mung.jpeg', width = 300)
-
+        image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+        github_url = "https://github.com/ImPJH"
+        logo_url = 'https://icons.veryicon.com/png/o/food--drinks/pakd/mail-218.png'
+        email = 'impjhy1129@snu.ac.kr'
+        col1.markdown(
+            f'<div style="display: flex; align-items: center;">'
+            f'<a href="{github_url}" target="_blank" style="margin-right: 10px;"><img src="{image_url}" alt="Repo" width="25"/></a>'
+            f'<a href="mailto:{email}"><img src="{logo_url}" alt="Email" width="26"/></a>'
+            f'</div>',
+            unsafe_allow_html=True
+        )
     st.divider()
 
     with st.container():
         col1,col2=st.columns(2)
         col1.image('./photo/mungmung.jpeg', width = 270)
         col2.write('')
-        col2.write('')
-        col2.write('')
         col2.subheader('이나은')
         col2.write('M.S. Student @ SNU GSDS')
-        col2.write('[github](https://github.com/better62)')
-
+        image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+        github_url = "https://github.com/better62"
+        logo_url = 'https://icons.veryicon.com/png/o/food--drinks/pakd/mail-218.png'
+        email = 'better__62@snu.ac.kr'
+        col2.markdown(
+            f'<div style="display: flex; align-items: center;">'
+            f'<a href="{github_url}" target="_blank" style="margin-right: 10px;"><img src="{image_url}" alt="Repo" width="25"/></a>'
+            f'<a href="mailto:{email}"><img src="{logo_url}" alt="Email" width="26"/></a>'
+            f'</div>',
+            unsafe_allow_html=True
+        )
     st.divider()
     with st.container():
         col1,col2=st.columns(2)
         col1.write('')
-        col1.write('')
-        col1.write('')
         col1.subheader('진현빈')
         col1.write('M.S. Student @ SNU GSDS')
-        col1.write('[github](https://github.com/hyunbinui)')
-        col2.image('./photo/mung.jpeg', width = 300)    
+        col2.image('./photo/mung.jpeg', width = 300)
+        image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
+        github_url = "https://github.com/hyunbinui"
+        logo_url = 'https://icons.veryicon.com/png/o/food--drinks/pakd/mail-218.png'
+        email = 'hyunbin.jin@snu.ac.kr'
+        col1.markdown(
+            f'<div style="display: flex; align-items: center;">'
+            f'<a href="{github_url}" target="_blank" style="margin-right: 10px;"><img src="{image_url}" alt="Repo" width="25"/></a>'
+            f'<a href="mailto:{email}"><img src="{logo_url}" alt="Email" width="26"/></a>'
+            f'</div>',
+            unsafe_allow_html=True
+        )            
+
+

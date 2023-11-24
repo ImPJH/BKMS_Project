@@ -11,6 +11,12 @@ from streamlit_extras.switch_page_button import switch_page
 from st_pages import Page, show_pages, hide_pages
 import json
 
+st.set_page_config(
+    page_title="SEARCH",
+    layout="wide",
+    page_icon="🫂",
+    initial_sidebar_state="expanded")
+
 hide_pages(['login', 'Main', 'Team','Search'])
 
 @st.cache_data

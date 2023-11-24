@@ -3,6 +3,12 @@ import bcrypt
 import psycopg2
 from st_pages import Page, show_pages, hide_pages
 from streamlit_extras.switch_page_button import switch_page
+st.set_page_config(
+    page_title="LOGIN",
+    layout="wide",
+    page_icon="🫂",
+    initial_sidebar_state="expanded")
+
 hide_pages(['Team'])
 
 show_pages([
