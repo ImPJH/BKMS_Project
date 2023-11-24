@@ -47,7 +47,7 @@ if selected == "Team":
         col1.write('')
         col1.subheader('김서린')
         col1.write('M.S. Student @ SNU GSDS')
-        col2.image('./photo/mung.jpeg', width = 300)
+        col2.image('./photo/sr.png', width = 300)
         image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
         github_url = "https://github.com/Seorin-Kim"
         logo_url = 'https://icons.veryicon.com/png/o/food--drinks/pakd/mail-218.png'
@@ -63,7 +63,7 @@ if selected == "Team":
 
     with st.container():
         col1,col2=st.columns(2)
-        col1.image('./photo/mungmung.jpeg', width = 270)
+        col1.image('./photo/sh.png', width = 270)
         col2.write('')
         col2.subheader('박선호')
         col2.write('M.S. Student @ SNU GSDS')
@@ -84,7 +84,7 @@ if selected == "Team":
         col1.write('')
         col1.subheader('박지형')
         col1.write('M.S. Student @ SNU GSDS')
-        col2.image('./photo/mung.jpeg', width = 300)
+        col2.image('./photo/jh.png', width = 300)
         image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
         github_url = "https://github.com/ImPJH"
         logo_url = 'https://icons.veryicon.com/png/o/food--drinks/pakd/mail-218.png'
@@ -100,7 +100,7 @@ if selected == "Team":
 
     with st.container():
         col1,col2=st.columns(2)
-        col1.image('./photo/mungmung.jpeg', width = 270)
+        col1.image('./photo/ne.png', width = 270)
         col2.write('')
         col2.subheader('이나은')
         col2.write('M.S. Student @ SNU GSDS')
@@ -121,7 +121,7 @@ if selected == "Team":
         col1.write('')
         col1.subheader('진현빈')
         col1.write('M.S. Student @ SNU GSDS')
-        col2.image('./photo/mung.jpeg', width = 300)
+        col2.image('./photo/hb.png', width = 300)
         image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
         github_url = "https://github.com/hyunbinui"
         logo_url = 'https://icons.veryicon.com/png/o/food--drinks/pakd/mail-218.png'
