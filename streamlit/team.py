@@ -1,4 +1,22 @@
 import streamlit as st
+from streamlit_lottie import st_lottie
+from streamlit_option_menu import option_menu
+from st_pages import Page, show_pages, hide_pages
+import json
+
+@st.cache_data
+def load_lottiefile(filepath: str):
+    with open(filepath,"r") as f:
+        return json.load(f)
+
+#Options Menu
+with st.sidebar:
+    selected = option_menu('BSAFE', ["Main", 'Search','Team'], 
+        icons=['play-btn','search','info-circle'],menu_icon='intersect', default_index=0)
+    lottie = load_lottiefile("similo3.json")
+    st_lottie(lottie,key='loc')
+
+hide_pages(['login', 'Main', 'Team'])
 
 st.title('About Us')
 with st.container():

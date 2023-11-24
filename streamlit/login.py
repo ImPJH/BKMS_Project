@@ -10,6 +10,8 @@ show_pages([
     Page("team.py","Team")
 ])
 
+hide_pages(['Team'])
+
 def create_users_table():
     conn = psycopg2.connect(
         dbname="teamdb5",
