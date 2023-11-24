@@ -1,6 +1,14 @@
 import streamlit as st
 import bcrypt
 import psycopg2
+from st_pages import Page, show_pages, hide_pages
+from streamlit_extras.switch_page_button import switch_page
+
+show_pages([
+    Page("page.py","Main"),
+    Page("login.py","login"),
+    Page("team.py","Team")
+])
 
 def create_users_table():
     conn = psycopg2.connect(
@@ -19,8 +27,6 @@ def create_users_table():
 
     conn.commit()
     conn.close()
-
-
 
 def add_user(username, password, age, gender):
     conn = psycopg2.connect(
@@ -119,7 +125,7 @@ def app():
         st.session_state.page = "login"
 
     if st.session_state.logged_in:
-        main()
+        switch_page('Main')
     else:
         if st.session_state.page == "login":
             show_login()
