@@ -9,7 +9,7 @@ import util.postgresql_helper as postgresql_helper
 
 # neighbourhood_group list 보여줄 때 사용
 def get_distinct_neighbourhood_group(to_list=False):
-    sql = 'select distinct neighbourhood_group from neighbourhood'
+    sql = 'select distinct neighbourhood_group from neighbourhood ORDER BY neighbourhood_group ASC'
     sql_type = 'select'
     data = postgresql_helper.run(sql,sql_type)
     if to_list: return data['neighbourhood_group'].values.tolist()
