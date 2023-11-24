@@ -9,108 +9,116 @@ import pandas as pd
 import streamlit as st
 import folium
 
+
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
+import components.small_detail as small_detail
 #클릭한 숙소 id를 가져오기
 
-id = 3539882
-
-
-acc = display.accommodation_info(id)#가져온 id 넣어주기
-#'name' ('room_type', 'price')
-#host 관련 정보 : 'host_name', 'host_is_superhost'
-#room 관련 정보 : 'accommodates', 'bathrooms', 'bedrooms', 'beds', 'amenities', 'minimum_nights', 'maximum_nights'
-#review 관련 정보 : 'review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location'
-
+col1, col2 = st.columns(2)
+id = st.session_state['accommodation_id']
 with st.container():
-    col1,col2=st.columns(2)
+    if id:
+        acc = display.accommodation_info(id)
+        attraction = pd.read_csv('./data/merged_attraction.csv')
+        heatmap = pd.read_csv('./data/precinct_danger_normalized.csv')
 
-    attraction = pd.read_csv('./data/merged_attraction.csv')
-    heatmap = pd.read_csv('./data/precinct_danger_normalized.csv')
+        geo_data = './data/neighbourhoods.geojson'
+        latitude, longitude = acc['latitude'][0], acc['longitude'][0]
+        center = [latitude, longitude]    # 숙소 위도 경도
 
-    geo_data = './data/neighbourhoods.geojson'
-    latitude, longitude = acc['latitude'][0], acc['longitude'][0]
-    center = [latitude, longitude]    # 숙소 위도 경도
+        m = folium.Map(location=center, zoom_start=12)
 
-    m = folium.Map(location=center, zoom_start=12)
+        folium.raster_layers.TileLayer('CartoDB Positron').add_to(m)
 
-    folium.raster_layers.TileLayer('CartoDB Positron').add_to(m)
-
-    # 히트맵
-    folium.Choropleth(
-        geo_data=geo_data,      # .geojson 파일
-        data=heatmap,           # .csv 파일
-        columns=('neighbourhood', 'precinct_danger_normalized'), 
-        key_on='feature.properties.neighbourhood',
-        fill_color='RdBu_r',
-        legend_name='danger'
-    ).add_to(m)
-
-    # attraction
-    for i in attraction.index:
-        folium.Marker(
-            location = attraction.loc[i, ['Latitude', 'Longitude']],
-            tooltip = attraction.loc[i, 'Tourist_Spot'],        # 마우스 갖다대면 나오는 문구
-            popup = folium.Popup(f"{attraction.loc[i, 'Address_x']}", max_width=300, min_width=300),
-            icon=folium.Icon(icon='bookmark',icon_color='lightgrey', color='cadetblue')
+        # 히트맵
+        folium.Choropleth(
+            geo_data=geo_data,      # .geojson 파일
+            data=heatmap,           # .csv 파일
+            columns=('neighbourhood', 'precinct_danger_normalized'), 
+            key_on='feature.properties.neighbourhood',
+            fill_color='RdBu_r',
+            legend_name='danger'
         ).add_to(m)
 
-    folium.Circle(
-        location = [acc['latitude'][0], acc['longitude'][0]],
-        tooltip = acc['name'][0],        # 마우스 갖다대면 나오는 문구
-        radius = 150,
-        color='darkred',
-        opacity=0.65
-    ).add_to(m)
+        # attraction
+        for i in attraction.index:
+            folium.Marker(
+                location = attraction.loc[i, ['Latitude', 'Longitude']],
+                tooltip = attraction.loc[i, 'Tourist_Spot'],        # 마우스 갖다대면 나오는 문구
+                popup = folium.Popup(f"{attraction.loc[i, 'Address_x']}", max_width=300, min_width=300),
+                icon=folium.Icon(icon='bookmark',icon_color='lightgrey', color='cadetblue')
+            ).add_to(m)
 
-    col1.write(m)
+        folium.Circle(
+            location = [acc['latitude'][0], acc['longitude'][0]],
+            tooltip = acc['name'][0],        # 마우스 갖다대면 나오는 문구
+            radius = 150,
+            color='darkred',
+            opacity=0.65
+        ).add_to(m)
+
+        col1.write(m)
+        
+with col2:
+    small_detail.show(st.session_state['list_accommodation_id'])
+    if st.session_state['accommodation_id']:
+        id = st.session_state['accommodation_id']
+
+if id:
+    acc = display.accommodation_info(id)
+    #'name' ('room_type', 'price')
+    #host 관련 정보 : 'host_name', 'host_is_superhost'
+    #room 관련 정보 : 'accommodates', 'bathrooms', 'bedrooms', 'beds', 'amenities', 'minimum_nights', 'maximum_nights'
+    #review 관련 정보 : 'review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location'
+    st.header(acc.name[0]+ " ("+ acc.room_type[0]+ " , " + str(acc.price[0]) + " $)")
+
+    st.subheader('Host 관련 정보')
+
+    if acc.host_is_superhost[0] == True:
+        st.markdown(f":first_place_medal: {acc.host_name[0]}") 
+    else:
+        st.markdown(acc.host_name[0])
 
 
+    df3 = pd.DataFrame(acc[['host_name', 'host_is_superhost']], 
+                    columns = ('host_name', 'host_is_superhost'))
 
-st.header(acc.name[0]+ " ("+ acc.room_type[0]+ " , " + str(acc.price[0]) + " $)")
-
-st.subheader('Host 관련 정보')
-
-if acc.host_is_superhost[0] == True:
-    st.markdown(f":first_place_medal: {acc.host_name[0]}") 
-else:
-    st.markdown(acc.host_name[0])
-
-
-df3 = pd.DataFrame(acc[['host_name', 'host_is_superhost']], 
-                   columns = ('host_name', 'host_is_superhost'))
-
-st.subheader('Room 관련 정보')
-df1 = pd.DataFrame(acc[['accommodates', 'bathrooms', 'bedrooms', 'beds','minimum_nights', 'maximum_nights']], 
-                   columns = ['accommodates', 'bathrooms', 'bedrooms', 'beds','minimum_nights', 'maximum_nights'])
-df1.rename(index={0:'num'}, inplace=True)
-st.table(df1)
+    st.subheader('Room 관련 정보')
+    df1 = pd.DataFrame(acc[['accommodates', 'bathrooms', 'bedrooms', 'beds','minimum_nights', 'maximum_nights']], 
+                    columns = ['accommodates', 'bathrooms', 'bedrooms', 'beds','minimum_nights', 'maximum_nights'])
+    df1.rename(index={0:'num'}, inplace=True)
+    st.table(df1)
 
 
-st.subheader('Amenity 관련 정보')
-acc1=acc.amenities.values
-st.markdown(acc1[0])
+    st.subheader('Amenity 관련 정보')
+    acc1=acc.amenities.values
+    st.markdown(acc1[0])
 
 
-st.subheader('Review 관련 정보')
-df2 = pd.DataFrame(acc[['review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location']])
-df2 = df2.astype('float')
+    st.subheader('Review 관련 정보')
+    df2 = pd.DataFrame(acc[['review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location']])
+    df2 = df2.astype('float')
 
-review_num = int(acc['review_num'][0])
-review_avg = round(acc['review_avg'][0], 2)
-review_cleanliness = round(acc['review_cleanliness'][0], 2)
-review_checkin = round(acc['review_checkin'][0], 2)
-review_location= round(acc['review_location'][0], 2)
+    review_num = int(acc['review_num'][0])
+    review_avg = round(acc['review_avg'][0], 2)
+    review_cleanliness = round(acc['review_cleanliness'][0], 2)
+    review_checkin = round(acc['review_checkin'][0], 2)
+    review_location= round(acc['review_location'][0], 2)
 
-if review_avg<=1.5:
-    st.markdown("⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
-elif review_avg<=2.5:
-    st.markdown("⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
-elif review_avg<=3.5:
-    st.markdown("⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
-elif review_avg<=4.5:
-    st.markdown("⭐⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
-else:
-    st.markdown("⭐⭐⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
+    if review_avg<=1.5:
+        st.markdown("⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
+    elif review_avg<=2.5:
+        st.markdown("⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
+    elif review_avg<=3.5:
+        st.markdown("⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
+    elif review_avg<=4.5:
+        st.markdown("⭐⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
+    else:
+        st.markdown("⭐⭐⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
 
-st.write('Review Cleanliness: '+str(review_cleanliness)+"/5")
-st.write('Review Check-in: '+str(review_checkin)+"/5")
-st.write('Review Location: '+str(review_location)+"/5")
+    st.write('Review Cleanliness: '+str(review_cleanliness)+"/5")
+    st.write('Review Check-in: '+str(review_checkin)+"/5")
+    st.write('Review Location: '+str(review_location)+"/5")
