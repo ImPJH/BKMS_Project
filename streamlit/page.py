@@ -71,7 +71,7 @@ with st.sidebar:
 if selected=="Main":
     #Header
     st.title('For Your Safe Journey')
-    st.subheader('A new tool to find safe Airbnb that matches your demand.')
+    st.subheader('Find a safe Airbnb that meets your expectations.')
 
     st.divider()
 
