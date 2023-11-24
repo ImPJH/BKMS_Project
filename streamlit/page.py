@@ -29,7 +29,9 @@ from st_pages import Page, show_pages, hide_pages
 st.set_page_config(
     page_title="BSAFE",
     layout="wide",
-    initial_sidebar_state="expanded")
+    initial_sidebar_state="expanded",
+    page_icon="🫂"
+    )
 
 
 show_pages([
