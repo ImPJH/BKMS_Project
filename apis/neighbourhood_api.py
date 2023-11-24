@@ -28,12 +28,9 @@ def get_accommodation_id_by_neighbourhoods(neighbourhood:str,neighbourhood_group
     sql = f"SELECT neighbourhood_id FROM neighbourhood WHERE (neighbourhood = '{neighbourhood}' and neighbourhood_group = '{neighbourhood_group}')"
     sql_type = 'select'
     neighbourhood_id = postgresql_helper.run(sql,sql_type)['neighbourhood_id'][0]
-    print(neighbourhood_id)
 
     sql = f"SELECT id FROM accommodation WHERE neighbourhood_id = {neighbourhood_id} ORDER BY id ASC"
     sql_type = 'select'
     data = postgresql_helper.run(sql,sql_type)
     if to_list : return data['id'].values.tolist()
     else: return data
-
-print(get_accommodation_id_by_neighbourhoods('Allerton','Bronx',to_list=True))

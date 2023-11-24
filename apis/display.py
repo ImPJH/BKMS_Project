@@ -8,9 +8,12 @@ sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from util.postgresql_helper import run
 
 # acommodation id list -> name, airbnb_danger, precinct_danger, room_type, price, latitude, longitude
-def accommodations_simple_info(id_list):
+def accommodations_simple_info(id_list,limit=None):
     accommodation_df = pd.DataFrame()
-    for i in range(len(id_list)):
+    stopper = None
+    if limit: stopper = limit
+    else: stopper = len(id_list)
+    for i in range(stopper):
         sql_accommodation = f'SELECT * FROM accommodation WHERE id = {id_list[i]}'
         accommodation_info = run(sql_accommodation, 'select')
 
@@ -22,7 +25,7 @@ def accommodations_simple_info(id_list):
         df = df[['id', 'neighbourhood_id', 'neighbourhood_group', 'neighbourhood', 'precinct',
                  'name', 'latitude', 'longitude', 'room_type', 'price', 'airbnb_danger_normalized', 'precinct_danger_normalized']]
         
-        accommodation_df = pd.concat([accommodation_df, df], axis=0)
+        accommodation_df = pd.concat([accommodation_df, df], axis=0,ignore_index=True)
     
     return accommodation_df
 

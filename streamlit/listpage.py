@@ -14,7 +14,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
-import components.small_detail as small_detail
+import apis.display as display_api
 #클릭한 숙소 id를 가져오기
 
 col1, col2 = st.columns(2)
@@ -63,7 +63,14 @@ with st.container():
         col1.write(m)
         
 with col2:
-    small_detail.show(st.session_state['list_accommodation_id'])
+    accommodation_df = display_api.accommodations_simple_info(st.session_state['list_accommodation_id'],limit=5)
+    with st.container():
+        for idx, row in accommodation_df.iterrows():
+            is_clicked = st.button(f"{row['name']} ({row['room_type']})\n\nprice: {row['price']} danger: {row['precinct_danger_normalized']+row['airbnb_danger_normalized']})",key = f"{row['id']}")
+            
+            if is_clicked: 
+                st.session_state['accommodation_id'] = row['id']
+
     if st.session_state['accommodation_id']:
         id = st.session_state['accommodation_id']
 
