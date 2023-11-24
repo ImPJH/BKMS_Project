@@ -9,7 +9,7 @@ from util.postgresql_helper import run
 def accommodations_simple_info(id_list):
     accommodation_df = pd.DataFrame()
     for i in range(len(id_list)):
-        sql_accommodation = f'SELECT * FROM accommodation WHERE id = {accommodation_id[i]}'
+        sql_accommodation = f'SELECT * FROM accommodation WHERE id = {id_list[i]}'
         accommodation_info = run(sql_accommodation, 'select')
 
         sql_neighbourhood = f'SELECT * FROM neighbourhood WHERE neighbourhood_id = {accommodation_info.loc[0, "neighbourhood_id"]}'
@@ -56,11 +56,4 @@ def crime_info(id):
     accommodation_info = run(sql_accommodation, 'select')
 
 
-
-
-accommodation_id = [21736164, 3539618, 35430378]
-
-st.dataframe(accommodation_info(21736164))
-
-st.dataframe(accommodations_simple_info(accommodation_id))
 
