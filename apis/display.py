@@ -77,12 +77,9 @@ def crime_info(id, display_type):
 
     if display_type == 'overall':
         col1, col2, col3 = st.columns(3)
-        col1.subheader('Borough')
-        col1.write(neighbourhood_group)
-        col2.subheader('Neighbourhood')
-        col2.write(neighbourhood)
-        col3.subheader('Precinct')
-        col3.write(str(precinct))
+        col1.metric('Borough', neighbourhood_group)
+        col2.metric('Neighbourhood', neighbourhood)
+        col3.metric('Precinct', precinct)
 
         st.divider()
         st.subheader('Danger')
@@ -98,6 +95,7 @@ def crime_info(id, display_type):
         df.reset_index(inplace=True)
         df.rename(columns={0:'danger'}, inplace=True)
         fig = px.bar(df, x='index', y='danger', color='index', color_discrete_map={'Airbnb':px.colors.qualitative.Pastel[5], 'Neighbourhood':px.colors.qualitative.Pastel[5], 'Total':px.colors.qualitative.G10[0]})
+        fig.update_yaxes(fixedrange=[0, 100])
         fig.update_layout(xaxis_title = '', yaxis_title='Danger')
         fig.update_layout(showlegend=False)
         st.plotly_chart(fig, use_container_width=True)
@@ -105,12 +103,9 @@ def crime_info(id, display_type):
 
     elif display_type == 'date':
         col1, col2, col3 = st.columns(3)
-        col1.subheader('Borough')
-        col1.write(neighbourhood_group)
-        col2.subheader('Neighbourhood')
-        col2.write(neighbourhood)
-        col3.subheader('Precinct')
-        col3.write(str(precinct))
+        col1.metric('Borough', neighbourhood_group)
+        col2.metric('Neighbourhood', neighbourhood)
+        col3.metric('Precinct', precinct)
 
         
         # 월별, 요일별 count
@@ -157,12 +152,9 @@ def crime_info(id, display_type):
 
     elif display_type == 'crime_type':
         col1, col2, col3 = st.columns(3)
-        col1.subheader('Borough')
-        col1.write(neighbourhood_group)
-        col2.subheader('Neighbourhood')
-        col2.write(neighbourhood)
-        col3.subheader('Precinct')
-        col3.write(str(precinct))
+        col1.metric('Borough', neighbourhood_group)
+        col2.metric('Neighbourhood', neighbourhood)
+        col3.metric('Precinct', precinct)
 
         # 범죄유형별 count
         crime_type = pd.DataFrame(crime_df['crime_type'].value_counts()).reset_index()
@@ -197,12 +189,9 @@ def crime_info(id, display_type):
 
     elif display_type == 'victim':
         col1, col2, col3 = st.columns(3)
-        col1.subheader('Borough')
-        col1.write(neighbourhood_group)
-        col2.subheader('Neighbourhood')
-        col2.write(neighbourhood)
-        col3.subheader('Precinct')
-        col3.write(str(precinct))
+        col1.metric('Borough', neighbourhood_group)
+        col2.metric('Neighbourhood', neighbourhood)
+        col3.metric('Precinct', precinct)
 
         # 피해자 성별, 나이, 인종
         crime_sex = pd.DataFrame(crime_df['vic_sex'].value_counts())

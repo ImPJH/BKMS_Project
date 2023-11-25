@@ -80,55 +80,100 @@ if id:
     #host 관련 정보 : 'host_name', 'host_is_superhost'
     #room 관련 정보 : 'accommodates', 'bathrooms', 'bedrooms', 'beds', 'amenities', 'minimum_nights', 'maximum_nights'
     #review 관련 정보 : 'review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location'
-    st.header(acc.name[0]+ " ("+ acc.room_type[0]+ " , " + str(acc.price[0]) + " $)")
+    
+    st.divider()
+    st.header(acc.name[0])
 
-    st.subheader('Host 관련 정보')
-
+    col1, col2, col3 = st.columns(3)
+    col1.metric('Price', str(acc.price[0]) + ' $')
+    col2.metric('Room Type', acc.room_type[0])
     if acc.host_is_superhost[0] == True:
-        st.markdown(f":first_place_medal: {acc.host_name[0]}") 
+        col3.metric('Host', f":first_place_medal: {acc.host_name[0]}") 
     else:
-        st.markdown(acc.host_name[0])
+        col3.metric('Host', acc.host_name[0])
+
+    tab1, tab2 = st.tabs(['Room Info', 'Reviews'])
+    with tab1:
+        st.subheader('Room Information')
+        col1, col2, col3 = st.columns(3)
+        col1.metric('Accommodates', acc.accommodates[0])
+        col2.metric('Min Nights', acc.minimum_nights[0])
+        col3.metric('Max Nights', acc.maximum_nights[0])
+
+        st.divider()
+
+        st.subheader('Amenities')
+        col1, col2, col3 = st.columns(3)
+        col1.metric('Bathrooms', acc.bathrooms[0])
+        col2.metric('Bedrooms', acc.bedrooms[0])
+        col3.metric('Beds', acc.beds[0])
+
+        st.metric('Details', acc.amenities[0])
+
+        # acc1=acc.amenities.values
+        # st.markdown(acc1[0])
+
+    with tab2:
+        st.subheader('Reviews')
+        col1, col2 = st.columns(2)
+        col1.metric('\#', int(acc.review_num[0]))
+        col2.metric('Average', str(acc.review_avg[0].round(2))+' '+'⭐'*int(acc.review_avg[0].round(0)))
+
+        col1, col2, col3 = st.columns(3)
+        col1.metric('Cleanliness', acc.review_cleanliness[0].round(2))
+        col2.metric('Check-in', acc.review_checkin[0].round(2))
+        col3.metric('Location', acc.review_location[0].round(2))
+        
+
+    # st.header(acc.name[0]+ " ("+ acc.room_type[0]+ " , " + str(acc.price[0]) + " $)")
+
+    # st.subheader('Host 관련 정보')
+
+    # if acc.host_is_superhost[0] == True:
+    #     st.markdown(f":first_place_medal: {acc.host_name[0]}") 
+    # else:
+    #     st.markdown(acc.host_name[0])
 
 
-    df3 = pd.DataFrame(acc[['host_name', 'host_is_superhost']], 
-                    columns = ('host_name', 'host_is_superhost'))
+    # df3 = pd.DataFrame(acc[['host_name', 'host_is_superhost']], 
+    #                 columns = ('host_name', 'host_is_superhost'))
 
-    st.subheader('Room 관련 정보')
-    df1 = pd.DataFrame(acc[['accommodates', 'bathrooms', 'bedrooms', 'beds','minimum_nights', 'maximum_nights']], 
-                    columns = ['accommodates', 'bathrooms', 'bedrooms', 'beds','minimum_nights', 'maximum_nights'])
-    df1.rename(index={0:'num'}, inplace=True)
-    st.table(df1)
-
-
-    st.subheader('Amenity 관련 정보')
-    acc1=acc.amenities.values
-    st.markdown(acc1[0])
+    # st.subheader('Room 관련 정보')
+    # df1 = pd.DataFrame(acc[['accommodates', 'bathrooms', 'bedrooms', 'beds','minimum_nights', 'maximum_nights']], 
+    #                 columns = ['accommodates', 'bathrooms', 'bedrooms', 'beds','minimum_nights', 'maximum_nights'])
+    # df1.rename(index={0:'num'}, inplace=True)
+    # st.table(df1)
 
 
-    st.subheader('Review 관련 정보')
-    df2 = pd.DataFrame(acc[['review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location']])
-    df2 = df2.astype('float')
+    # st.subheader('Amenity 관련 정보')
+    # acc1=acc.amenities.values
+    # st.markdown(acc1[0])
 
-    review_num = int(acc['review_num'][0])
-    review_avg = round(acc['review_avg'][0], 2)
-    review_cleanliness = round(acc['review_cleanliness'][0], 2)
-    review_checkin = round(acc['review_checkin'][0], 2)
-    review_location= round(acc['review_location'][0], 2)
 
-    if review_avg<=1.5:
-        st.markdown("⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
-    elif review_avg<=2.5:
-        st.markdown("⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
-    elif review_avg<=3.5:
-        st.markdown("⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
-    elif review_avg<=4.5:
-        st.markdown("⭐⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
-    else:
-        st.markdown("⭐⭐⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
+    # st.subheader('Review 관련 정보')
+    # df2 = pd.DataFrame(acc[['review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location']])
+    # df2 = df2.astype('float')
 
-    st.write('Review Cleanliness: '+str(review_cleanliness)+"/5")
-    st.write('Review Check-in: '+str(review_checkin)+"/5")
-    st.write('Review Location: '+str(review_location)+"/5")
+    # review_num = int(acc['review_num'][0])
+    # review_avg = round(acc['review_avg'][0], 2)
+    # review_cleanliness = round(acc['review_cleanliness'][0], 2)
+    # review_checkin = round(acc['review_checkin'][0], 2)
+    # review_location= round(acc['review_location'][0], 2)
+
+    # if review_avg<=1.5:
+    #     st.markdown("⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
+    # elif review_avg<=2.5:
+    #     st.markdown("⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
+    # elif review_avg<=3.5:
+    #     st.markdown("⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
+    # elif review_avg<=4.5:
+    #     st.markdown("⭐⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
+    # else:
+    #     st.markdown("⭐⭐⭐⭐⭐ ("+str(review_avg)+", "+str(review_num)+" Reviews)")
+
+    # st.write('Review Cleanliness: '+str(review_cleanliness)+"/5")
+    # st.write('Review Check-in: '+str(review_checkin)+"/5")
+    # st.write('Review Location: '+str(review_location)+"/5")
 
     st.divider()
 
