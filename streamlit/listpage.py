@@ -182,7 +182,16 @@ if id:
 
     st.divider()
 
-    st.header('Crime Information')
+    st.title('Crime Information')
+
+    neighbourhood_group, neighbourhood, precinct = display.neighbourhood_info(id)
+    col1, col2, col3 = st.columns(3)
+    col1.metric('Borough', neighbourhood_group)
+    col2.metric('Neighbourhood', neighbourhood)
+    col3.metric('Precinct', precinct)
+
+    st.divider()
+
     tab1, tab2, tab3, tab4 = st.tabs(['Overall', 'Date', 'Crime Type', 'Victim'])
     with tab1:
         display.crime_info(id, 'overall')

@@ -55,6 +55,21 @@ def accommodation_info(id):
     return df
 
 
+def neighbourhood_info(id):
+    # crime 테이블에서 불러오기
+    sql_accommodation = f'SELECT neighbourhood_id, airbnb_danger_normalized FROM accommodation WHERE id = {id}'
+    accommodation_df = run(sql_accommodation, 'select')
+    neighbourhood_id = accommodation_df.loc[0, 'neighbourhood_id']
+
+    sql_neighbourhood = f'SELECT neighbourhood_group, neighbourhood, precinct, precinct_danger_normalized FROM neighbourhood WHERE neighbourhood_id = {neighbourhood_id}'
+    neighbourhood_df = run(sql_neighbourhood, 'select')
+    precinct = neighbourhood_df.loc[0, 'precinct']
+    neighbourhood_group = neighbourhood_df.loc[0, 'neighbourhood_group']
+    neighbourhood = neighbourhood_df.loc[0, 'neighbourhood']
+
+    return neighbourhood_group, neighbourhood, precinct
+
+
 # accommodation id 1개 + display_type(overall, date, crime_type, victim) -> 해당 숙소 precinct의 범죄 정보 return
 def crime_info(id, display_type):
     # crime 테이블에서 불러오기
@@ -67,8 +82,6 @@ def crime_info(id, display_type):
     neighbourhood_df = run(sql_neighbourhood, 'select')
     precinct = neighbourhood_df.loc[0, 'precinct']
     precinct_danger = neighbourhood_df.loc[0, 'precinct_danger_normalized'] * 1000
-    neighbourhood_group = neighbourhood_df.loc[0, 'neighbourhood_group']
-    neighbourhood = neighbourhood_df.loc[0, 'neighbourhood']
 
     sql_crime = f'SELECT * FROM crime WHERE precinct = {precinct}'
     crime_df = run(sql_crime, 'select')
@@ -76,12 +89,6 @@ def crime_info(id, display_type):
 
 
     if display_type == 'overall':
-        col1, col2, col3 = st.columns(3)
-        col1.metric('Borough', neighbourhood_group)
-        col2.metric('Neighbourhood', neighbourhood)
-        col3.metric('Precinct', precinct)
-
-        st.divider()
         st.subheader('Danger')
         col1, col2, col3 = st.columns(3)
         col1.metric('Airbnb danger', airbnb_danger.round(2))
@@ -100,13 +107,7 @@ def crime_info(id, display_type):
         st.plotly_chart(fig, use_container_width=True)
 
 
-    elif display_type == 'date':
-        col1, col2, col3 = st.columns(3)
-        col1.metric('Borough', neighbourhood_group)
-        col2.metric('Neighbourhood', neighbourhood)
-        col3.metric('Precinct', precinct)
-
-        
+    elif display_type == 'date':      
         # 월별, 요일별 count
         crime_month = pd.DataFrame(crime_df['date'].dt.month.value_counts()).sort_values(by=['date']).reset_index()
         crime_month.rename(columns={'date':'month'}, inplace=True)
@@ -115,7 +116,6 @@ def crime_info(id, display_type):
         crime_weekday.rename(columns={'date':'weekday'}, inplace=True)
         crime_weekday['weekday'] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 
-        st.divider()
 
         col1, col2 = st.columns(2)
         fig_month = px.bar(crime_month, x='month', y='count', color='month', color_discrete_map={'1':px.colors.qualitative.Set3[0],
@@ -150,11 +150,6 @@ def crime_info(id, display_type):
 
 
     elif display_type == 'crime_type':
-        col1, col2, col3 = st.columns(3)
-        col1.metric('Borough', neighbourhood_group)
-        col2.metric('Neighbourhood', neighbourhood)
-        col3.metric('Precinct', precinct)
-
         # 범죄유형별 count
         crime_type = pd.DataFrame(crime_df['crime_type'].value_counts()).reset_index()
         crime_type_all = ['ROBBERY', 'RAPE', 'GRAND LARCENY', 'THEFT-FRAUD',
@@ -171,7 +166,6 @@ def crime_info(id, display_type):
         crime_add = pd.concat([crime_type_add, crime_count_add], axis=1)
         crime_type = pd.concat([crime_type, crime_add], axis=0).reset_index(drop=True)
 
-        st.divider()
         st.subheader('# Crimes by Crime Type')
 
         for i in range(5):
@@ -187,11 +181,6 @@ def crime_info(id, display_type):
 
 
     elif display_type == 'victim':
-        col1, col2, col3 = st.columns(3)
-        col1.metric('Borough', neighbourhood_group)
-        col2.metric('Neighbourhood', neighbourhood)
-        col3.metric('Precinct', precinct)
-
         # 피해자 성별, 나이, 인종
         crime_sex = pd.DataFrame(crime_df['vic_sex'].value_counts())
         cnt = 0
@@ -212,7 +201,6 @@ def crime_info(id, display_type):
         crime_age = pd.DataFrame(crime_df['vic_age_group'].value_counts()).reset_index()
         crime_race = pd.DataFrame(crime_df['vic_race'].value_counts()).reset_index()
 
-        st.divider()
 
         col1, col2, col3 = st.columns(3)
 
