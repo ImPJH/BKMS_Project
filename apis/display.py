@@ -193,9 +193,12 @@ def crime_info(id, display_type):
         dict = {'count':cnt['count']}
         sex_unknown = pd.DataFrame(dict, index=['UNKNOWN'])
         crime_sex = pd.concat([crime_sex, sex_unknown])
-        crime_sex.drop('E', inplace=True)
-        crime_sex.drop('D', inplace=True)
-        crime_sex.drop('L', inplace=True)
+        if 'E' in crime_sex.index:
+            crime_sex.drop('E', inplace=True)
+        if 'D' in crime_sex.index:
+            crime_sex.drop('D', inplace=True)
+        if 'L' in crime_sex.index:
+            crime_sex.drop('L', inplace=True)
         crime_sex.reset_index(inplace=True)
         crime_sex.rename(columns={'index':'vic_sex'}, inplace=True)
         crime_age = pd.DataFrame(crime_df['vic_age_group'].value_counts()).reset_index()
