@@ -52,12 +52,12 @@ with st.container():
                 icon=folium.Icon(icon='bookmark',icon_color='lightgrey', color='cadetblue')
             ).add_to(m)
 
-        folium.Circle(
+        folium.Marker(
             location = [acc['latitude'][0], acc['longitude'][0]],
             tooltip = acc['name'][0],        # 마우스 갖다대면 나오는 문구
             radius = 150,
             color='darkred',
-            opacity=0.65
+            icon=folium.Icon(icon='heart',icon_color='white', color='red')
         ).add_to(m)
 
         col1.write(m)
