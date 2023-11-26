@@ -11,14 +11,15 @@ st.set_page_config(
     page_icon="🫂",
     initial_sidebar_state="expanded")
 
-hide_pages(['login', 'Main', 'Team','Search'])
-
 show_pages([
     Page("page.py","Main"),
     Page("login.py","login"),
     Page("team.py","Team"),
-    Page("search.py","Search")
+    Page("search.py","Search"),
+    Page("listpage.py","Listpage")
 ])
+
+hide_pages(['login', 'Main', 'Team','Search','Listpage'])
 
 
 @st.cache_data
@@ -49,6 +50,7 @@ if selected == "Team":
         col1.write('')
         col1.subheader('김서린')
         col1.write('M.S. Student @ SNU GSDS')
+        col1.write('Contribution : Construct DB')
         col2.image('./photo/sr.png', width = 300)
         image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
         github_url = "https://github.com/Seorin-Kim"
@@ -69,6 +71,7 @@ if selected == "Team":
         col2.write('')
         col2.subheader('박선호')
         col2.write('M.S. Student @ SNU GSDS')
+        col2.write('Contribution : Frontend')
         image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
         github_url = "https://github.com/preferpark99"
         logo_url = 'https://icons.veryicon.com/png/o/food--drinks/pakd/mail-218.png'
@@ -86,6 +89,7 @@ if selected == "Team":
         col1.write('')
         col1.subheader('박지형')
         col1.write('M.S. Student @ SNU GSDS')
+        col1.write('Contribution : Backend')
         col2.image('./photo/jh.png', width = 300)
         image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
         github_url = "https://github.com/ImPJH"
@@ -106,6 +110,7 @@ if selected == "Team":
         col2.write('')
         col2.subheader('이나은')
         col2.write('M.S. Student @ SNU GSDS')
+        col2.write('Contribution : Backend')
         image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
         github_url = "https://github.com/better62"
         logo_url = 'https://icons.veryicon.com/png/o/food--drinks/pakd/mail-218.png'
@@ -123,6 +128,7 @@ if selected == "Team":
         col1.write('')
         col1.subheader('진현빈')
         col1.write('M.S. Student @ SNU GSDS')
+        col1.write('Contribution : Frontend')
         col2.image('./photo/hb.png', width = 300)
         image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
         github_url = "https://github.com/hyunbinui"

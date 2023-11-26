@@ -1,26 +1,26 @@
 import streamlit as st
 import pandas as pd
-from urllib.request import urlopen
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.metrics.pairwise import euclidean_distances
-import plotly.express as px
-import plotly.graph_objects as go
+# from urllib.request import urlopen
+# from sklearn.preprocessing import StandardScaler
+# from sklearn.metrics.pairwise import cosine_similarity
+# from sklearn.metrics.pairwise import euclidean_distances
+# import plotly.express as px
+# import plotly.graph_objects as go
 from streamlit_option_menu import option_menu
 import json
-import requests
+# import requests
 from streamlit_lottie import st_lottie
-import pydeck as pdk
+# import pydeck as pdk
 
-import geopandas as gpd
+# import geopandas as gpd
 
 import folium
-from folium.map import Marker
-from streamlit_folium import st_folium
+# from folium.map import Marker
+# from streamlit_folium import st_folium
 
-from jinja2 import Template
+# from jinja2 import Template
 
-from folium.raster_layers import ImageOverlay
+# from folium.raster_layers import ImageOverlay
 
 from streamlit_extras.switch_page_button import switch_page
 from st_pages import Page, show_pages, hide_pages
@@ -109,7 +109,6 @@ if selected=="Main":
             icon=folium.Icon(icon='bookmark',icon_color='lightgrey', color='cadetblue')
         ).add_to(m)
 
-    # folium으로 500개 -> 안 뜸 ... 가장 문제
     airbnb = airbnb.sort_values(by='airbnb_danger')
     for i in airbnb.index[:300]:
         if airbnb['room_type'][i] == 'Private room':
