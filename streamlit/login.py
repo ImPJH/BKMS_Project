@@ -101,6 +101,7 @@ def show_login():
         if check_user(username, password):
             st.session_state.logged_in = True
             st.session_state.username = username
+            switch_page('Main')
         else:
             st.warning("Incorrect username or password")
 
@@ -133,11 +134,12 @@ def app():
     else:
         if st.session_state.page == "login":
             show_login()
-            if st.button("Click here to sign up"):
+            if st.button("Click here to sign up"):  # 더블클릭이슈
                 st.session_state.page = "signup"
         elif st.session_state.page == "signup":
             show_signup()
             if st.button("Click here to log in"):
                 st.session_state.page = "login"
+                switch_page('login')
 
 app()

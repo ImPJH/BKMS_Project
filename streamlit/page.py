@@ -43,9 +43,18 @@ show_pages([
 ])
 
 hide_pages(['login', 'Main', 'Team','Search',"Listpage"])
-col1, col2, col3, col4, col5, col6, col7, col8, col9, col10, col11, col12, col13, col14, col15 = st.columns(15)
-if col15.button('login'):
-    switch_page('login')
+
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if st.session_state.logged_in:
+    if st.sidebar.button('logout'):
+        st.session_state.logged_in = False
+        st.session_state.username = None
+        switch_page('Main')
+else:
+    if st.sidebar.button('login'):
+        switch_page('login')
 
 
 #Data Pull and Functions

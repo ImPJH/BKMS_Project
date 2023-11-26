@@ -29,6 +29,20 @@ show_pages([
 
 hide_pages(['login', 'Main', 'Team','Search','Listpage'])
 
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if st.session_state.logged_in:
+    if st.sidebar.button('logout'):
+        st.session_state.logged_in = False
+        st.session_state.username = None
+        switch_page('Search')
+else:
+    if st.sidebar.button('login'):
+        switch_page('login')
+
+
+
 @st.cache_data
 def load_lottiefile(filepath: str):
     with open(filepath,"r") as f:
