@@ -74,12 +74,18 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 if st.session_state.logged_in:
-    if st.sidebar.button('logout'):
+    col1, col2, col3 = st.sidebar.columns(3)
+    if col1.button('My Page'):
+        st.session_state.page = 'mypage'
+        switch_page('login')
+    if col2.button('Logout'):
         st.session_state.logged_in = False
         st.session_state.username = None
-        switch_page('Listpage')
+        st.session_state.page = 'login'
+        switch_page('Main')
+    
 else:
-    if st.sidebar.button('login'):
+    if st.sidebar.button('Login'):
         switch_page('login')
 
 
@@ -140,6 +146,8 @@ if selected == 'Airbnb Info':
             #review 관련 정보 : 'review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location'
             
             st.divider()
+            if st.button('Back to Search'):
+                switch_page('Search')
             st.title(acc.name[0])
 
             col1, col2, col3 = st.columns(3)

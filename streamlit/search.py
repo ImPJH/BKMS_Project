@@ -33,12 +33,18 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 if st.session_state.logged_in:
-    if st.sidebar.button('logout'):
+    col1, col2, col3 = st.sidebar.columns(3)
+    if col1.button('My Page'):
+        st.session_state.page = 'mypage'
+        switch_page('login')
+    if col2.button('Logout'):
         st.session_state.logged_in = False
         st.session_state.username = None
-        switch_page('Search')
+        st.session_state.page = 'login'
+        switch_page('Main')
+    
 else:
-    if st.sidebar.button('login'):
+    if st.sidebar.button('Login'):
         switch_page('login')
 
 
@@ -66,9 +72,9 @@ if selected == "Search":
 
     #neighbourhood, accommodation table 가져와서 필요한 column만 쓰는거 sql문으로 구현해야됨?
 
-    loc_select=st.radio('Type',['Location으로 검색','Airbnb name으로 검색'],horizontal=True, label_visibility="collapsed") 
+    loc_select=st.radio('Type',['Location Search','Airbnb Name Search'],horizontal=True, label_visibility="collapsed") 
 
-    if loc_select=='Airbnb name으로 검색':
+    if loc_select=='Airbnb Name Search':
         #text로 검색하는 부분 구현해야됨
         text_input = st.text_input("Enter Your Airbnb name : ")
         if st.button('OK'):
@@ -82,7 +88,7 @@ if selected == "Search":
                 st.session_state['accommodation_id'] = name_id
                 switch_page('Listpage')
 
-    if loc_select=='Location으로 검색':
+    if loc_select=='Location Search':
         group_list = neighbourhood_api.get_distinct_neighbourhood_group(to_list=True)
         neighbourhood_group_select = st.selectbox(label='Borough',options=['Borough']+group_list, label_visibility='collapsed')
 

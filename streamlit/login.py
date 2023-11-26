@@ -3,6 +3,15 @@ import bcrypt
 import psycopg2
 from st_pages import Page, show_pages, hide_pages
 from streamlit_extras.switch_page_button import switch_page
+
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+
+import apis.display as display_api
+#클릭한 숙소 id를 가져오기
+
+
 st.set_page_config(
     page_title="LOGIN",
     layout="wide",
@@ -97,7 +106,7 @@ def show_login():
     username = st.text_input("Username")
     password = st.text_input("Password", type="password")
 
-    if st.button("Log in"):
+    if st.button("Login"):
         if check_user(username, password):
             st.session_state.logged_in = True
             st.session_state.username = username
@@ -112,10 +121,10 @@ def show_signup():
     new_username = st.text_input("New username")
     new_password = st.text_input("New password", type="password")
     new_age = st.number_input("Your age", min_value=0, max_value=120)  # 나이 입력
-    new_gender = st.selectbox("Your gender", options=["Male", "Female", "Other"])  # 성별 선택
+    new_gender = st.selectbox("Your gender", options=["Male", "Female", "Others"])  # 성별 선택
 
 
-    if st.button("Sign up"):
+    if st.button("Sign Up"):
         if new_username == '':
             st.warning("Enter the username")
         if new_password == '':
@@ -138,25 +147,67 @@ def app():
     if "page" not in st.session_state:
         st.session_state.page = "login"
 
-    if st.session_state.logged_in and (st.session_state.page != 'mypage'):
+    if st.session_state.logged_in and (st.session_state.page != 'mypage') and (st.session_state.page != 'update_info'):
         switch_page('Main')
     else:
         if st.session_state.page == "login":
             show_login()
-            if st.button("Click here to sign up"):
+            col1, col2, _, _, _, _, _, _, _, _ = st.columns(10)
+            if col2.button('Main'):
+                switch_page('Main')
+            if col1.button("Sign Up"):
                 st.session_state.page = "signup"
                 switch_page('login')
+        
         elif st.session_state.page == "signup":
             show_signup()
-            if st.button("Click here to log in"):
+            col1, col2, _, _, _, _, _ = st.columns(7)
+            if col2.button('Main'):
+                st.session_state.page = "login"
+                switch_page('Main')
+            if col1.button("Back to Login"):
                 st.session_state.page = "login"
                 switch_page('login')
+        
         elif st.session_state.page == 'mypage':
-            st.write(st.session_state.username)     # 마이페이지 정보 업데이트
-            if st.button('logout'):
+            user_name = st.session_state.username
+            user_age, user_gender = display_api.user_info(user_name)
+
+            st.title('My Page')
+            st.divider()
+            st.metric('Username', f'👤 {user_name}')
+            col1, col2, _, _ = st.columns(4)
+            col1.metric('Age', user_age)
+            col2.metric('Gender', user_gender)
+            st.divider()
+
+            if st.button('Update Information'):
+                st.session_state.page = 'update_info'
+                switch_page('login')
+
+            col1, col2, _, _, _, _, _, _, _, _ = st.columns(10)
+            if col2.button('Main'):
+                switch_page('Main')
+
+            if col1.button('Logout'):
                 st.session_state.logged_in = False
                 st.session_state.username = None
                 st.session_state.page = 'login'
                 switch_page('login')
 
+        elif st.session_state.page == 'update_info':
+            user_age, user_gender = display_api.user_info(st.session_state.username)
+            new_age = st.number_input("Your age", min_value=0, max_value=120, value=user_age)  # 나이 입력
+            new_gender = st.selectbox("Your gender", options=["Male", "Female", "Others"], index=["Male", "Female", "Others"].index(user_gender))  # 성별 선택
+
+            col1, col2, _, _, _, _, _, _, _, _ = st.columns(10)
+            if col1.button('Update'):
+                try:
+                    display_api.user_info_update(st.session_state.username, new_age, new_gender)
+                except:
+                    st.warning('Error in update')
+                else:
+                    st.success('You have successfully updated information')
+            if col2.button('Main'):
+                switch_page('Main')
 app()

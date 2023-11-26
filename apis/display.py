@@ -7,6 +7,20 @@ import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from util.postgresql_helper import run
 
+def user_info(username):
+    sql = f"SELECT age, gender FROM users WHERE username = '{username}'"
+    user_table = run(sql, 'select')
+
+    age = user_table.loc[0, 'age']
+    gender = user_table.loc[0, 'gender']
+
+    return age, gender
+
+def user_info_update(username, age, gender):
+    sql = f"UPDATE users SET age = {age}, gender = '{gender}' WHERE username = '{username}'"
+    run(sql, 'update')
+
+
 # acommodation id list -> name, airbnb_danger, precinct_danger, room_type, price, latitude, longitude
 def accommodations_simple_info(id_list,limit=None):
     accommodation_df = pd.DataFrame()
@@ -229,10 +243,3 @@ def crime_info(id, display_type):
         col3.plotly_chart(fig_race, use_container_width=True)
 
 
-
-
-
-# crime_info(3539618, 'overall')
-# crime_info(3539618, 'date')
-# crime_info(3539618, 'crime_type')
-# crime_info(3539618, 'victim')
