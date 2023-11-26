@@ -35,8 +35,8 @@ def load_lottiefile(filepath: str):
         return json.load(f)
 
 with st.sidebar:
-    selected = option_menu('BSAFE', ["Main", 'Search','Team'],
-        icons=['house','search','people'],menu_icon='airplane', default_index=1)
+    selected = option_menu('BSAFE', ["Main", 'Search', 'Airbnb Info', 'Team'],
+        icons=['house','search', 'list-ul', 'people'],menu_icon='airplane', default_index=1)
     lottie = load_lottiefile("similo3.json")
     st_lottie(lottie,key='loc')
 
@@ -46,6 +46,8 @@ if selected == "Main":
 
 
 if selected == "Search":
+    st.session_state['list_accommodation_id'] = None
+
     st.subheader('Search Your Airbnb!') #위에 부제목
 
     #neighbourhood, accommodation table 가져와서 필요한 column만 쓰는거 sql문으로 구현해야됨?
@@ -82,6 +84,9 @@ if selected == "Search":
 
     #범죄 위험도 몇 미만인 숙소 검색 부분도 시간 되면 구현하기
 
+
+if selected=='Airbnb Info':
+    switch_page('Listpage')
 
 if selected=='Team':
     switch_page('Team')

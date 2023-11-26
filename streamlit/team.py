@@ -29,8 +29,8 @@ def load_lottiefile(filepath: str):
 
 #Options Menu
 with st.sidebar:
-    selected = option_menu('BSAFE', ["Main", 'Search','Team'],
-        icons=['house','search','people'],menu_icon='airplane', default_index=2)
+    selected = option_menu('BSAFE', ["Main", 'Search', 'Airbnb Info', 'Team'],
+        icons=['house','search', 'list-ul', 'people'],menu_icon='airplane', default_index=3)
     lottie = load_lottiefile("similo3.json")
     st_lottie(lottie,key='loc')
 
@@ -41,7 +41,12 @@ if selected == "Main":
 if selected == "Search":
     switch_page("Search")
 
+if selected=='Airbnb Info':
+    switch_page('Listpage')
+
 if selected == "Team":  
+    st.session_state['list_accommodation_id'] = None
+
     st.title('About Us')
     with st.container():
         col1,col2=st.columns(2)

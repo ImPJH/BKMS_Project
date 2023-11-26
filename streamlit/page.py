@@ -63,13 +63,14 @@ def load_lottiefile(filepath: str):
         return json.load(f)
 
 with st.sidebar:
-    selected = option_menu('BSAFE', ["Main", 'Search','Team'],
-        icons=['house','search','people'],menu_icon='airplane', default_index=0)
+    selected = option_menu('BSAFE', ["Main", 'Search', 'Airbnb Info', 'Team'],
+        icons=['house','search', 'list-ul', 'people'],menu_icon='airplane', default_index=0)
     lottie = load_lottiefile("similo3.json")
     st_lottie(lottie,key='loc')
 
 #Intro Page
 if selected=="Main":
+    st.session_state['list_accommodation_id'] = None
     #Header
     st.title('For Your Safe Journey')
     st.subheader('A new tool to find safe Airbnb that matches your demand.')
@@ -154,6 +155,9 @@ if selected=="Main":
 #Search Page
 if selected=='Search':
     switch_page('Search')
+
+if selected=='Airbnb Info':
+    switch_page('Listpage')
 
 if selected=='Team':
     switch_page('Team')
