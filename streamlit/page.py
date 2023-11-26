@@ -48,10 +48,16 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 if st.session_state.logged_in:
-    if st.sidebar.button('logout'):
+    col1, col2, col3 = st.sidebar.columns(3)
+    if col1.button('mypage'):
+        st.session_state.page = 'mypage'
+        switch_page('login')
+    if col2.button('logout'):
         st.session_state.logged_in = False
         st.session_state.username = None
+        st.session_state.page = 'login'
         switch_page('Main')
+    
 else:
     if st.sidebar.button('login'):
         switch_page('login')

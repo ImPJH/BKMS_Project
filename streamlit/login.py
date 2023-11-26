@@ -116,11 +116,20 @@ def show_signup():
 
 
     if st.button("Sign up"):
-        if check_user(new_username, new_password): 
+        if new_username == '':
+            st.warning("Enter the username")
+        if new_password == '':
+            st.warning("Enter the password")
+        
+        try:
+            if check_user(new_username, new_password): 
+                st.warning("This username is already taken")
+            else:
+                add_user(new_username, new_password, new_age, new_gender)  # add_user 함수를 호출하여 사용자 정보를 데이터베이스에 저장
+                st.success("You have successfully signed up")
+        except:
             st.warning("This username is already taken")
-        else:
-            add_user(new_username, new_password, new_age, new_gender)  # add_user 함수를 호출하여 사용자 정보를 데이터베이스에 저장
-            st.success("You have successfully signed up")
+
 
 # 메인 함수
 def app():
@@ -129,17 +138,25 @@ def app():
     if "page" not in st.session_state:
         st.session_state.page = "login"
 
-    if st.session_state.logged_in:
+    if st.session_state.logged_in and (st.session_state.page != 'mypage'):
         switch_page('Main')
     else:
         if st.session_state.page == "login":
             show_login()
-            if st.button("Click here to sign up"):  # 더블클릭이슈
+            if st.button("Click here to sign up"):
                 st.session_state.page = "signup"
+                switch_page('login')
         elif st.session_state.page == "signup":
             show_signup()
             if st.button("Click here to log in"):
                 st.session_state.page = "login"
+                switch_page('login')
+        elif st.session_state.page == 'mypage':
+            st.write(st.session_state.username)     # 마이페이지 정보 업데이트
+            if st.button('logout'):
+                st.session_state.logged_in = False
+                st.session_state.username = None
+                st.session_state.page = 'login'
                 switch_page('login')
 
 app()
