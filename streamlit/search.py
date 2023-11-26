@@ -40,6 +40,11 @@ with st.sidebar:
     lottie = load_lottiefile("similo3.json")
     st_lottie(lottie,key='loc')
 
+
+if selected == "Main":
+    switch_page('Main')
+
+
 if selected == "Search":
     st.subheader('Search Your Airbnb!') #위에 부제목
 
@@ -77,5 +82,6 @@ if selected == "Search":
 
     #범죄 위험도 몇 미만인 숙소 검색 부분도 시간 되면 구현하기
 
-else:
-    switch_page(selected)
+
+if selected=='Team':
+    switch_page('Team')

@@ -3,12 +3,16 @@
 
 #특정 숙소를 클릭하면 아래쪽에 숙소 정보 관련 정보 띄우고 주변 범죄 관련 정보도 띄우고 -서노나으니
 
+import json
 import search
 import apis.display as display
 import pandas as pd
 import streamlit as st
 import folium
-
+from st_pages import Page, show_pages, hide_pages
+from streamlit_extras.switch_page_button import switch_page
+from streamlit_lottie import st_lottie
+from streamlit_option_menu import option_menu
 
 import os
 import sys
@@ -61,17 +65,39 @@ def make_map(id):
     return m
 
 
+show_pages([
+    Page("page.py","Main"),
+    Page("login.py","login"),
+    Page("team.py","Team"),
+    Page("search.py","Search"),
+    Page("listpage.py","Listpage")
+])
+
+# hide_pages(['login', 'Main', 'Team','Search','Listpage'])
+
+# @st.cache_data
+# def load_lottiefile(filepath: str):
+#     with open(filepath,"r") as f:
+#         return json.load(f)
+
+# with st.sidebar:
+#     selected = option_menu('BSAFE', ["Main", 'Search','Team'],
+#         icons=['house','search','people'],menu_icon='airplane', )
+#     lottie = load_lottiefile("similo3.json")
+#     st_lottie(lottie,key='loc')
+
+# if selected == "Main":
+#     switch_page('Main')
+
+# if selected == "Search":
+#     switch_page("Search")
+
+# if selected=='Team':
+#     switch_page('Team')
+
+
 col1, col2 = st.columns(2)
 id = st.session_state['accommodation_id']
-with st.container():
-    if id:
-        m = make_map(id)
-        col1.write(m)
-
-    else:
-        # id=None(지역검색인 경우) -> 첫번째 숙소로 지도 그리기
-        m = make_map(st.session_state['list_accommodation_id'][0])
-        col1.write(m)
 
 
 with col2:
@@ -85,6 +111,17 @@ with col2:
 
     if st.session_state['accommodation_id']:
         id = st.session_state['accommodation_id']
+
+with st.container():
+    if id:
+        m = make_map(id)
+        col1.write(m)
+
+    else:
+        # id=None(지역검색인 경우) -> 첫번째 숙소로 지도 그리기
+        m = make_map(st.session_state['list_accommodation_id'][0])
+        col1.write(m)
+
 
 if id:
     acc = display.accommodation_info(id)
