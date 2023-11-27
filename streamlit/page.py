@@ -125,6 +125,19 @@ if selected=="Main":
             icon=folium.Icon(icon='bookmark',icon_color='lightgrey', color='cadetblue')
         ).add_to(m)
 
+    la_guardia = [40.7900, -73.8700]
+    jfk = [40.6650, -73.7821]
+    newark = [40.7090, -74.1805]
+    folium.Marker(location=la_guardia, 
+                  tooltip='LaGuardia Airport',
+                  icon=folium.CustomIcon(icon_image='./photo/airport.png', icon_size=(37,37))).add_to(m)
+    folium.Marker(location=jfk, 
+                  tooltip='JFK Airport',
+                  icon=folium.CustomIcon(icon_image='./photo/airport.png', icon_size=(37,37))).add_to(m)
+    folium.Marker(location=newark, 
+                  tooltip='Newark Airport',
+                  icon=folium.CustomIcon(icon_image='./photo/airport.png', icon_size=(37,37))).add_to(m)
+
     airbnb = airbnb.sort_values(by='airbnb_danger')
     for i in airbnb.index[:300]:
         if airbnb['room_type'][i] == 'Private room':
