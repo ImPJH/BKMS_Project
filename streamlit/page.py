@@ -47,6 +47,12 @@ hide_pages(['login', 'Main', 'Team','Search',"Listpage"])
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
+if "list_accommodation_id" not in st.session_state:
+    st.session_state['list_accommodation_id'] = None
+
+if "accommodation_id" not in st.session_state:
+    st.session_state['accommodation_id'] = None
+
 if st.session_state.logged_in:
     col1, col2, col3 = st.sidebar.columns(3)
     if col1.button('My Page'):
@@ -85,7 +91,6 @@ with st.sidebar:
 
 #Intro Page
 if selected=="Main":
-    st.session_state['list_accommodation_id'] = None
     #Header
     st.title('For Your Safe Journey')
     st.subheader('A new tool to find safe Airbnb that matches your demand.')
