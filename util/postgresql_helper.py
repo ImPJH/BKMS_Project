@@ -4,7 +4,7 @@ import pandas as pd
 
 def run(sql:str,sql_type,connection_info="host=147.47.200.145 dbname=teamdb5 user=team5 password=newyork port=34543"
 ):
-    if sql_type not in ['select','update']: raise Exception("sql_type은 'select'거나 'update'여야 합니다.")
+    if sql_type not in ['select','update', 'insert']: raise Exception("sql_type은 'select'거나 'update'여야 합니다.")
 
     conn = psycopg2.connect(connection_info)
     if sql_type == 'select':
@@ -20,7 +20,7 @@ def run(sql:str,sql_type,connection_info="host=147.47.200.145 dbname=teamdb5 use
     
         return reaction
     
-    elif sql_type == 'update':
+    elif sql_type == 'update' or sql_type == 'insert':
         try:
             cursor = conn.cursor()
             cursor.execute(sql)

@@ -1,6 +1,7 @@
 import json
 import search
 import apis.display as display
+import apis.likes as likes
 import pandas as pd
 import streamlit as st
 import folium
@@ -159,8 +160,32 @@ if selected == 'Airbnb Info':
             #review 관련 정보 : 'review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location'
             
             st.divider()
-            if st.button('Back to Search'):
-                switch_page('Search')
+            # if st.button('Back to Search'):
+            #     switch_page('Search')
+            
+            if st.session_state.logged_in:
+                username = st.session_state.username
+                cnt = likes.find_like(username, id)
+
+                if cnt == 0:
+                    if st.button('♡ Like'):
+                        likes.first_like(username, id)
+                        switch_page('Listpage')
+                elif cnt % 2 == 0:
+                    if st.button('♡ Like'):
+                        likes.click_like(username, id, cnt+1)
+                        switch_page('Listpage')
+                elif cnt % 2 == 1:
+                    if st.button('♥ Like'):
+                        likes.click_like(username, id, cnt+1)
+                        switch_page('Listpage')
+            
+            else:
+                if st.button('♡ Like'):
+                    st.warning("You need to login")
+                    
+            
+            
             st.title(acc.name[0])
 
             col1, col2, col3 = st.columns(3)
