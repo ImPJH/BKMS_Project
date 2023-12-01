@@ -109,10 +109,10 @@ def crime_info(id, display_type):
         col1.progress(airbnb_danger/100)
         col2.metric('Precinct danger', precinct_danger.round(2))
         col2.progress(precinct_danger/100)
-        col3.metric('Total danger', (airbnb_danger+precinct_danger).round(2))
-        col3.progress((airbnb_danger+precinct_danger)/100)
+        col3.metric('Total danger', ((airbnb_danger+precinct_danger)/2).round(2))
+        col3.progress(((airbnb_danger+precinct_danger)/2)/100)
 
-        df = pd.DataFrame([airbnb_danger, precinct_danger, airbnb_danger+precinct_danger], index=['Airbnb', 'Precinct', 'Total'])
+        df = pd.DataFrame([airbnb_danger, precinct_danger, (airbnb_danger+precinct_danger)/2], index=['Airbnb', 'Precinct', 'Total'])
         df.reset_index(inplace=True)
         df.rename(columns={0:'danger'}, inplace=True)
         fig = px.bar(df, x='index', y='danger', range_y=[0,100], color='index', color_discrete_map={'Airbnb':px.colors.qualitative.Pastel[5], 'Precinct':px.colors.qualitative.Pastel[5], 'Total':px.colors.qualitative.G10[0]})

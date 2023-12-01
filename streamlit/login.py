@@ -215,7 +215,7 @@ def app():
                 with st.container():
                     for idx, row in accommodation_df.iterrows():
                         # 버튼 내부 text 왼쪽정렬 -> CSS?
-                        is_clicked = st.button(f"[danger: {round(row['precinct_danger_normalized']*1000+row['airbnb_danger_normalized']*100000, 2)}] {row['name']}\n\n$ {row['price']} / {row['room_type']}", key = f"{row['id']}")
+                        is_clicked = st.button(f"[danger: {round((row['precinct_danger_normalized']*1000+row['airbnb_danger_normalized']*100000)/2, 2)}] {row['name']}\n\n$ {row['price']} / {row['room_type']}", key = f"{row['id']}")
                         
                         if is_clicked: 
                             st.session_state['accommodation_id'] = row['id']
