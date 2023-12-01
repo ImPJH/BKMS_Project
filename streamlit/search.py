@@ -5,6 +5,8 @@ import sys
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 
 import apis.neighbourhood_api as neighbourhood_api
+import apis.price_api as price_api
+import apis.danger_api as danger_api
 import name_api
 from streamlit_lottie import st_lottie
 from streamlit_option_menu import option_menu
@@ -73,7 +75,7 @@ if selected == "Search":
 
     #neighbourhood, accommodation table 가져와서 필요한 column만 쓰는거 sql문으로 구현해야됨?
 
-    loc_select=st.radio('Type',['Location Search','Airbnb Name Search'],horizontal=True, label_visibility="collapsed") 
+    loc_select=st.radio('Type',['Location Search','Airbnb Name Search','Search by Price','Search by Danger'],horizontal=True, label_visibility="collapsed") 
 
     if loc_select=='Airbnb Name Search':
         #text로 검색하는 부분 구현해야됨
@@ -101,9 +103,107 @@ if selected == "Search":
             st.session_state['accommodation_id'] = None
             switch_page('Listpage')
     
-        #5개 중 하나의 neighbourhood 택하면 더 세부 neighbourhood 선택하는거 구현해야됨
+    # if loc_select=='Search by Price':
+        
+    #     if 'min_price' not in st.session_state:
+    #         st.session_state['min_price'] = 10
+    #     if 'max_price' not in st.session_state:
+    #         st.session_state['max_price'] = 300
+        
+    #     st.session_state['min_price'] = st.number_input("💸 Enter minimum price (unit:💲) : ", min_value = 10, max_value=300, 
+    #                                                     value=st.session_state['min_price'],key='min_price_input')
+    #     st.session_state['max_price'] = st.number_input("💸 Enter maximum price (unit:💲) : ", min_value = 10, max_value=300, 
+    #                                                     value=st.session_state['max_price'],key='max_price_input')
+        
+    #     st.session_state['min_price'], st.session_state['max_price'] = st.slider("Or, Select a range of price", 10, 300, 
+    #                                      (st.session_state['min_price'], st.session_state['max_price']), key = 'price_range_slider')
+    #     if st.button('OK'):
+    #         list_accommodation_id = price_api.get_price(st.session_state['min_price'],st.session_state['max_price'],to_list=True)
+    #         st.session_state['list_accommodation_id'] = list_accommodation_id
+    #         st.session_state['accommodation_id'] = None
+    #         switch_page('Listpage')
 
-    #범죄 위험도 몇 미만인 숙소 검색 부분도 시간 되면 구현하기
+    if loc_select=='Search by Price':
+        if 'min_price' not in st.session_state:
+            st.session_state['min_price'] = 10
+        if 'max_price' not in st.session_state:
+            st.session_state['max_price'] = 300
+        if 'input_type_price' not in st.session_state:
+            st.session_state['input_type_price'] = 'slider'
+
+        input_type_price = st.selectbox("Choose your input type", ['slider', 'text'], index=['slider', 'text'].index(st.session_state['input_type_price']), key='input_type_price')
+
+        if input_type_price == 'slider':
+            min_price, max_price = st.slider("💸 Select a range of price (unit:💲)", 10, 300, 
+                                            (st.session_state['min_price'], st.session_state['max_price']), 
+                                            key='price_range_slider')
+            st.session_state['min_price'] = min_price
+            st.session_state['max_price'] = max_price
+        else:
+            st.session_state['min_price'] = st.number_input("💸 Enter minimum price (unit:💲) : ", min_value = 10, max_value=300, 
+                                                            value=st.session_state['min_price'],key='min_price_input')
+            st.session_state['max_price'] = st.number_input("💸 Enter maximum price (unit:💲) : ", min_value = 10, max_value=300, 
+                                                            value=st.session_state['max_price'],key='max_price_input')
+
+        if st.button('OK'):
+            list_accommodation_id = price_api.get_price(st.session_state['min_price'],st.session_state['max_price'],to_list=True)
+            st.session_state['list_accommodation_id'] = list_accommodation_id
+            st.session_state['accommodation_id'] = None
+            switch_page('Listpage')
+
+
+
+    # if loc_select=='Search by Danger':
+        
+    #     if 'min_danger' not in st.session_state:
+    #         st.session_state['min_danger'] = 0.0
+    #     if 'max_danger' not in st.session_state:
+    #         st.session_state['max_danger'] = 100.0
+        
+    #     st.session_state['min_danger'] = st.number_input("🚨 Enter minimum danger : ", min_value = 0.0, max_value=100.0, 
+    #                                                     value=st.session_state['min_danger'],key='min_danger_input')
+    #     st.session_state['max_danger'] = st.number_input("🚨 Enter maximum danger : ", min_value = 0.0, max_value=100.0, 
+    #                                                     value=st.session_state['max_danger'],key='max_danger_input')
+        
+    #     st.session_state['min_danger'], st.session_state['max_danger'] = st.slider("Or, Select a range of danger", 0.0, 100.0, 
+    #                                      (st.session_state['min_danger'], st.session_state['max_danger']), key = 'price_range_slider')
+    #     if st.button('OK'):
+    #         list_accommodation_id = danger_api.get_danger(st.session_state['min_danger'],st.session_state['max_danger'],to_list=True)
+    #         st.session_state['list_accommodation_id'] = list_accommodation_id
+    #         st.session_state['accommodation_id'] = None
+    #         switch_page('Listpage')
+
+    if loc_select=='Search by Danger':
+        st.markdown("**:red[Danger의 기준]**")
+        st.markdown("→ Airbnb danger와 Precinct danger를 평균 낸 것 (0점~100점)")
+        st.markdown("\n")
+        if 'min_danger' not in st.session_state:
+            st.session_state['min_danger'] = 0.0
+        if 'max_danger' not in st.session_state:
+            st.session_state['max_danger'] = 100.0
+        if 'input_type' not in st.session_state:
+            st.session_state['input_type'] = 'slider'
+
+        input_type = st.selectbox("Choose your input type", ['slider', 'text'], index=['slider', 'text'].index(st.session_state['input_type']), key='input_type')
+
+        if input_type == 'slider':
+            min_danger, max_danger = st.slider("🚨 Select a range of danger", 0.0, 100.0, 
+                                            (st.session_state['min_danger'], st.session_state['max_danger']), 
+                                            key='danger_range_slider')
+            st.session_state['min_danger'] = min_danger
+            st.session_state['max_danger'] = max_danger
+        else:
+            st.session_state['min_danger'] = st.number_input("🚨 Enter minimum danger : ", min_value = 0.0, max_value=100.0, 
+                                                            value=st.session_state['min_danger'], key='min_danger_input')
+            st.session_state['max_danger'] = st.number_input("🚨 Enter maximum danger : ", min_value = 0.0, max_value=100.0, 
+                                                            value=st.session_state['max_danger'], key='max_danger_input')
+
+        if st.button('OK'):
+            list_accommodation_id = danger_api.get_danger(st.session_state['min_danger'],st.session_state['max_danger'],to_list=True)
+            st.session_state['list_accommodation_id'] = list_accommodation_id
+            st.session_state['accommodation_id'] = None
+            switch_page('Listpage')
+
 
 
 if selected=='Airbnb Info':

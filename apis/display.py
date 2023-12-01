@@ -31,15 +31,16 @@ def accommodations_simple_info(id_list,limit=None):
         sql_accommodation = f'SELECT * FROM accommodation WHERE id = {id_list[i]}'
         accommodation_info = run(sql_accommodation, 'select')
 
-        sql_neighbourhood = f'SELECT * FROM neighbourhood WHERE neighbourhood_id = {accommodation_info.loc[0, "neighbourhood_id"]}'
-        neighbourhood_info = run(sql_neighbourhood, 'select')
-        neighbourhood_info = neighbourhood_info.drop('neighbourhood_id', axis=1)
+        if not accommodation_info.empty: #이부분ㅇ어라아ㅓ어ㅏㅇ
+            sql_neighbourhood = f'SELECT * FROM neighbourhood WHERE neighbourhood_id = {accommodation_info.loc[0, "neighbourhood_id"]}'
+            neighbourhood_info = run(sql_neighbourhood, 'select')
+            neighbourhood_info = neighbourhood_info.drop('neighbourhood_id', axis=1)
 
-        df = pd.concat([accommodation_info, neighbourhood_info], axis=1)
-        df = df[['id', 'neighbourhood_id', 'neighbourhood_group', 'neighbourhood', 'precinct',
-                 'name', 'latitude', 'longitude', 'room_type', 'price', 'airbnb_danger_normalized', 'precinct_danger_normalized']]
-        
-        accommodation_df = pd.concat([accommodation_df, df], axis=0,ignore_index=True)
+            df = pd.concat([accommodation_info, neighbourhood_info], axis=1)
+            df = df[['id', 'neighbourhood_id', 'neighbourhood_group', 'neighbourhood', 'precinct',
+                    'name', 'latitude', 'longitude', 'room_type', 'price', 'airbnb_danger_normalized', 'precinct_danger_normalized']]
+            
+            accommodation_df = pd.concat([accommodation_df, df], axis=0,ignore_index=True)
     
     return accommodation_df
 
