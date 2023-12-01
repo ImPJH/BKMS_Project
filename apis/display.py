@@ -59,7 +59,7 @@ def accommodation_info(id):
 
     df = pd.concat([accommodation_info, host_info, neighbourhood_info], axis=1)
     df = df[[
-            'id', 'host_id', 'host_name', 'host_is_superhost', 'neighbourhood_id', 'neighbourhood_group', 'neighbourhood',
+            'id', 'link', 'host_id', 'host_name', 'host_is_superhost', 'neighbourhood_id', 'neighbourhood_group', 'neighbourhood',
                 'precinct', 'name', 'description', 'latitude', 'longitude', 'room_type', 'short_description', 
                 'accommodates', 'bathrooms', 'bedrooms', 'beds', 'amenities', 'price', 'minimum_nights', 'maximum_nights',
                 'review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location',

@@ -249,21 +249,23 @@ def app():
                     username = st.session_state.username
                     cnt = likes.find_like(username, id)
 
+                    col1, col2, _, _, _, _, _, _, _, _ = st.columns(10)
+                    col2.link_button('🔗 Link', acc.link[0])
                     if cnt == 0:
-                        if st.button('♡ Like'):
+                        if col1.button('♡ Like'):
                             likes.first_like(username, id)
                             switch_page('login')
                     elif cnt % 2 == 0:
-                        if st.button('♡ Like'):
+                        if col1.button('♡ Like'):
                             likes.click_like(username, id, cnt+1)
                             switch_page('login')
                     elif cnt % 2 == 1:
-                        if st.button('♥ Like'):
+                        if col1.button('♥ Like'):
                             likes.click_like(username, id, cnt+1)
                             switch_page('login')
                 
                 else:
-                    if st.button('♡ Like'):
+                    if col1.button('♡ Like'):
                         st.warning("You need to login")
                         
                 
