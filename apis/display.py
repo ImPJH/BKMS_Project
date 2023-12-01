@@ -25,7 +25,7 @@ def user_info_update(username, age, gender):
 def accommodations_simple_info(id_list,limit=None):
     accommodation_df = pd.DataFrame()
     stopper = None
-    if limit: stopper = min(5,limit)
+    if limit: stopper = min(5,len(id_list))
     else: stopper = len(id_list)
     for i in range(stopper):
         sql_accommodation = f'SELECT * FROM accommodation WHERE id = {id_list[i]}'
