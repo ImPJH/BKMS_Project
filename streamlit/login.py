@@ -203,138 +203,144 @@ def app():
             st.header('Liked Airbnb')
 
             liked = likes.like_list(st.session_state.username)
-            col1, col2 = st.columns(2)
+            if len(liked) == 0:
+                st.write("You don't have a liked Airbnb yet. Search for accommodation and press [♡ like] button for your favorite accommodation!")
+            else:
+                col1, col2 = st.columns(2)
 
-            with col2:
-                accommodation_df = display_api.accommodations_simple_info(liked)
-                st.markdown('''
-                    <style>
-                    .fullHeight {height : 80vh;
-                        width : 100%}
-                    </style>''', unsafe_allow_html = True)
+                with col2:
+                    accommodation_df = display_api.accommodations_simple_info(liked)
+                    st.markdown('''
+                        <style>
+                        .fullHeight {height : 80vh;
+                            width : 100%}
+                        </style>''', unsafe_allow_html = True)
+                    with st.container():
+                        for idx, row in accommodation_df.iterrows():
+                            # 버튼 내부 text 왼쪽정렬 -> CSS?
+                            is_clicked = st.button(f"[danger: {round((row['precinct_danger_normalized']*1000+row['airbnb_danger_normalized']*100000)/2, 2)}] {row['name']}\n\n$ {row['price']} / {row['room_type']}", key = f"{row['id']}")
+                            
+                            if is_clicked: 
+                                st.session_state['accommodation_id'] = row['id']
+
+                    if st.session_state['accommodation_id']:
+                        id = st.session_state['accommodation_id']
+
                 with st.container():
-                    for idx, row in accommodation_df.iterrows():
-                        # 버튼 내부 text 왼쪽정렬 -> CSS?
-                        is_clicked = st.button(f"[danger: {round((row['precinct_danger_normalized']*1000+row['airbnb_danger_normalized']*100000)/2, 2)}] {row['name']}\n\n$ {row['price']} / {row['room_type']}", key = f"{row['id']}")
-                        
-                        if is_clicked: 
-                            st.session_state['accommodation_id'] = row['id']
+                    if not st.session_state['accommodation_id']:
+                        id = liked[0]
+                    
+                    if id:
+                        m = make_map(id)
+                        col1.write(m)
 
-                if st.session_state['accommodation_id']:
-                    id = st.session_state['accommodation_id']
+                    else:
+                        # id=None(지역검색인 경우) -> 첫번째 숙소로 지도 그리기
+                        m = make_map(liked[0])
+                        col1.write(m)
 
-            with st.container():
+
                 if id:
-                    m = make_map(id)
-                    col1.write(m)
+                    acc = display_api.accommodation_info(id)
+                    #'name' ('room_type', 'price')
+                    #host 관련 정보 : 'host_name', 'host_is_superhost'
+                    #room 관련 정보 : 'accommodates', 'bathrooms', 'bedrooms', 'beds', 'amenities', 'minimum_nights', 'maximum_nights'
+                    #review 관련 정보 : 'review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location'
+                    
+                    st.divider()
+                    # if st.button('Back to Search'):
+                    #     switch_page('Search')
+                    
+                    if st.session_state.logged_in:
+                        username = st.session_state.username
+                        cnt = likes.find_like(username, id)
 
-                else:
-                    # id=None(지역검색인 경우) -> 첫번째 숙소로 지도 그리기
-                    m = make_map(liked[0])
-                    col1.write(m)
-
-
-            if id:
-                acc = display_api.accommodation_info(id)
-                #'name' ('room_type', 'price')
-                #host 관련 정보 : 'host_name', 'host_is_superhost'
-                #room 관련 정보 : 'accommodates', 'bathrooms', 'bedrooms', 'beds', 'amenities', 'minimum_nights', 'maximum_nights'
-                #review 관련 정보 : 'review_num', 'review_avg', 'review_cleanliness', 'review_checkin', 'review_location'
-                
-                st.divider()
-                # if st.button('Back to Search'):
-                #     switch_page('Search')
-                
-                if st.session_state.logged_in:
-                    username = st.session_state.username
-                    cnt = likes.find_like(username, id)
-
-                    col1, col2, _, _, _, _, _, _, _, _ = st.columns(10)
-                    col2.link_button('🔗 Link', acc.link[0])
-                    if cnt == 0:
+                        col1, col2, _, _, _, _, _, _, _, _ = st.columns(10)
+                        col2.link_button('🔗 Link', acc.link[0])
+                        if cnt == 0:
+                            if col1.button('♡ Like'):
+                                likes.first_like(username, id)
+                                switch_page('login')
+                        elif cnt % 2 == 0:
+                            if col1.button('♡ Like'):
+                                likes.click_like(username, id, cnt+1)
+                                switch_page('login')
+                        elif cnt % 2 == 1:
+                            if col1.button('♥ Like'):
+                                likes.click_like(username, id, cnt+1)
+                                switch_page('login')
+                    
+                    else:
                         if col1.button('♡ Like'):
-                            likes.first_like(username, id)
-                            switch_page('login')
-                    elif cnt % 2 == 0:
-                        if col1.button('♡ Like'):
-                            likes.click_like(username, id, cnt+1)
-                            switch_page('login')
-                    elif cnt % 2 == 1:
-                        if col1.button('♥ Like'):
-                            likes.click_like(username, id, cnt+1)
-                            switch_page('login')
-                
-                else:
-                    if col1.button('♡ Like'):
-                        st.warning("You need to login")
-                        
-                
-                
-                st.title(acc.name[0])
+                            st.warning("You need to login")
+                            
+                    
+                    
+                    st.title(acc.name[0])
 
-                col1, col2, col3 = st.columns(3)
-                col1.metric('Price', str(acc.price[0]) + ' $')
-                col2.metric('Room Type', acc.room_type[0])
-                if acc.host_is_superhost[0] == True:
-                    col3.metric('Host', f"{acc.host_name[0]} ✅")
-                else:
-                    col3.metric('Host', acc.host_name[0])
-
-                tab1, tab2 = st.tabs(['Room Information', 'Reviews'])
-                with tab1:
-                    st.subheader('Room Information')
                     col1, col2, col3 = st.columns(3)
-                    col1.metric('Accommodates', acc.accommodates[0])
-                    col2.metric('Min Nights', acc.minimum_nights[0])
-                    col3.metric('Max Nights', acc.maximum_nights[0])
+                    col1.metric('Price', str(acc.price[0]) + ' $')
+                    col2.metric('Room Type', acc.room_type[0])
+                    if acc.host_is_superhost[0] == True:
+                        col3.metric('Host', f"{acc.host_name[0]} ✅")
+                    else:
+                        col3.metric('Host', acc.host_name[0])
+
+                    tab1, tab2 = st.tabs(['Room Information', 'Reviews'])
+                    with tab1:
+                        st.subheader('Room Information')
+                        col1, col2, col3 = st.columns(3)
+                        col1.metric('Accommodates', acc.accommodates[0])
+                        col2.metric('Min Nights', acc.minimum_nights[0])
+                        col3.metric('Max Nights', acc.maximum_nights[0])
+
+                        st.divider()
+
+                        st.subheader('Amenities')
+                        col1, col2, col3 = st.columns(3)
+                        col1.metric('Bathrooms', acc.bathrooms[0])
+                        col2.metric('Bedrooms', acc.bedrooms[0])
+                        col3.metric('Beds', acc.beds[0])
+
+
+                        with st.expander('Amenities Details'):
+                            amm = acc.amenities[0].replace('\n','').replace('\t','').split('|')
+                            for a in amm:
+                                st.write(a)
+
+                    with tab2:
+                        st.subheader('Reviews')
+                        col1, col2 = st.columns(2)
+                        col1.metric('\#', int(acc.review_num[0]))
+                        col2.metric('Average', str(acc.review_avg[0].round(2))+' '+'⭐'*int(acc.review_avg[0].round(0)))
+
+                        col1, col2, col3 = st.columns(3)
+                        col1.metric('Cleanliness', acc.review_cleanliness[0].round(2))
+                        col2.metric('Check-in', acc.review_checkin[0].round(2))
+                        col3.metric('Location', acc.review_location[0].round(2))
+                        
 
                     st.divider()
 
-                    st.subheader('Amenities')
+                    st.title('Crime Information')
+
+                    neighbourhood_group, neighbourhood, precinct = display_api.neighbourhood_info(id)
                     col1, col2, col3 = st.columns(3)
-                    col1.metric('Bathrooms', acc.bathrooms[0])
-                    col2.metric('Bedrooms', acc.bedrooms[0])
-                    col3.metric('Beds', acc.beds[0])
+                    col1.metric('Borough', neighbourhood_group)
+                    col2.metric('Neighbourhood', neighbourhood)
+                    col3.metric('Precinct', precinct)
 
+                    st.divider()
 
-                    with st.expander('Amenities Details'):
-                        amm = acc.amenities[0].replace('\n','').replace('\t','').split('|')
-                        for a in amm:
-                            st.write(a)
-
-                with tab2:
-                    st.subheader('Reviews')
-                    col1, col2 = st.columns(2)
-                    col1.metric('\#', int(acc.review_num[0]))
-                    col2.metric('Average', str(acc.review_avg[0].round(2))+' '+'⭐'*int(acc.review_avg[0].round(0)))
-
-                    col1, col2, col3 = st.columns(3)
-                    col1.metric('Cleanliness', acc.review_cleanliness[0].round(2))
-                    col2.metric('Check-in', acc.review_checkin[0].round(2))
-                    col3.metric('Location', acc.review_location[0].round(2))
-                    
-
-                st.divider()
-
-                st.title('Crime Information')
-
-                neighbourhood_group, neighbourhood, precinct = display_api.neighbourhood_info(id)
-                col1, col2, col3 = st.columns(3)
-                col1.metric('Borough', neighbourhood_group)
-                col2.metric('Neighbourhood', neighbourhood)
-                col3.metric('Precinct', precinct)
-
-                st.divider()
-
-                tab1, tab2, tab3, tab4 = st.tabs(['Overall', 'Date', 'Crime Type', 'Victim'])
-                with tab1:
-                    display_api.crime_info(id, 'overall')
-                with tab2:
-                    display_api.crime_info(id, 'date')
-                with tab3:
-                    display_api.crime_info(id, 'crime_type')
-                with tab4:
-                    display_api.crime_info(id, 'victim')
+                    tab1, tab2, tab3, tab4 = st.tabs(['Overall', 'Date', 'Crime Type', 'Victim'])
+                    with tab1:
+                        display_api.crime_info(id, 'overall')
+                    with tab2:
+                        display_api.crime_info(id, 'date')
+                    with tab3:
+                        display_api.crime_info(id, 'crime_type')
+                    with tab4:
+                        display_api.crime_info(id, 'victim')
 
         
 

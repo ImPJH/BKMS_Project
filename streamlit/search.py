@@ -34,17 +34,17 @@ if "logged_in" not in st.session_state:
 
 if st.session_state.logged_in:
     col1, col2, col3 = st.sidebar.columns(3)
-    if col1.button('My Page'):
+    if col1.button('My Page', key='mypage'):
         st.session_state.page = 'mypage'
         switch_page('login')
-    if col2.button('Logout'):
+    if col2.button('Logout', key='logout'):
         st.session_state.logged_in = False
         st.session_state.username = None
         st.session_state.page = 'login'
         switch_page('Main')
     
 else:
-    if st.sidebar.button('Login'):
+    if st.sidebar.button('Login', key='login'):
         switch_page('login')
 
 
@@ -58,7 +58,8 @@ with st.sidebar:
     selected = option_menu('BSAFE', ["Main", 'Search', 'Airbnb Info', 'Team'],
         icons=['house','search', 'list-ul', 'people'],menu_icon='airplane', default_index=1)
     lottie = load_lottiefile("similo3.json")
-    st_lottie(lottie,key='loc')
+    st_lottie(lottie, key='loc')
+
 
 
 if selected == "Main":

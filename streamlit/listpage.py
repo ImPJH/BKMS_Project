@@ -113,7 +113,10 @@ with st.sidebar:
     selected = option_menu('BSAFE', ["Main", 'Search', 'Airbnb Info', 'Team'],
         icons=['house','search', 'list-ul', 'people'],menu_icon='airplane', default_index=2)
     lottie = load_lottiefile("similo3.json")
-    st_lottie(lottie,key='loc')
+    try:
+        st_lottie(lottie, key='loc')
+    except:
+        switch_page('Listpage')
 
 if selected == "Main":
     switch_page('Main')
