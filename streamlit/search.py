@@ -153,9 +153,12 @@ if selected == "Search":
 
         if st.button('OK'):
             list_accommodation_id = price_api.get_price(st.session_state['min_price'],st.session_state['max_price'],to_list=True)
-            st.session_state['list_accommodation_id'] = list_accommodation_id
-            st.session_state['accommodation_id'] = None
-            switch_page('Listpage')
+            if not list_accommodation_id:
+                st.write("해당 범위에는 숙소가 존재하지 않습니다.")
+            else:
+                st.session_state['list_accommodation_id'] = list_accommodation_id
+                st.session_state['accommodation_id'] = None
+                switch_page('Listpage')
 
 
 
@@ -213,9 +216,12 @@ if selected == "Search":
 
         if st.button('OK'):
             list_accommodation_id = danger_api.get_danger(st.session_state['min_danger'],st.session_state['max_danger'],to_list=True)
-            st.session_state['list_accommodation_id'] = list_accommodation_id
-            st.session_state['accommodation_id'] = None
-            switch_page('Listpage')
+            if not list_accommodation_id:
+                st.write("해당 범위에는 숙소가 존재하지 않습니다.")
+            else:
+                st.session_state['list_accommodation_id'] = list_accommodation_id
+                st.session_state['accommodation_id'] = None
+                switch_page('Listpage')
 
 
 
