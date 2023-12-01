@@ -140,10 +140,16 @@ if selected == "Search":
             st.session_state['min_price'] = min_price
             st.session_state['max_price'] = max_price
         else:
-            st.session_state['min_price'] = st.number_input("💸 Enter minimum price (unit:💲) : ", min_value = 10, max_value=300, 
-                                                            value=st.session_state['min_price'],key='min_price_input')
-            st.session_state['max_price'] = st.number_input("💸 Enter maximum price (unit:💲) : ", min_value = 10, max_value=300, 
-                                                            value=st.session_state['max_price'],key='max_price_input')
+            col1, col2, col3 = st.columns([4.5,1,4.5])
+            with col1:
+                st.session_state['min_price'] = st.number_input("💸 Enter minimum price (unit:💲) : ", min_value = 10, max_value=300, 
+                                                                value=st.session_state['min_price'],key='min_price_input')
+            with col2:
+                st.write("\n")
+                st.markdown("**<center>~</center>**", unsafe_allow_html=True)
+            with col3:
+                st.session_state['max_price'] = st.number_input("💸 Enter maximum price (unit:💲) : ", min_value = 10, max_value=300, 
+                                                                value=st.session_state['max_price'],key='max_price_input')
 
         if st.button('OK'):
             list_accommodation_id = price_api.get_price(st.session_state['min_price'],st.session_state['max_price'],to_list=True)
@@ -193,10 +199,17 @@ if selected == "Search":
             st.session_state['min_danger'] = min_danger
             st.session_state['max_danger'] = max_danger
         else:
-            st.session_state['min_danger'] = st.number_input("🚨 Enter minimum danger : ", min_value = 0.0, max_value=100.0, 
+            col1, col2, col3 = st.columns([4.5,1,4.5])
+            with col1:
+                st.session_state['min_danger'] = st.number_input("🚨 Enter minimum danger : ", min_value = 0.0, max_value=100.0, 
                                                             value=st.session_state['min_danger'], key='min_danger_input')
-            st.session_state['max_danger'] = st.number_input("🚨 Enter maximum danger : ", min_value = 0.0, max_value=100.0, 
+            with col2:
+                st.write("\n")
+                st.markdown("**<center>~</center>**", unsafe_allow_html=True)
+            with col3:
+                st.session_state['max_danger'] = st.number_input("🚨 Enter maximum danger : ", min_value = 0.0, max_value=100.0, 
                                                             value=st.session_state['max_danger'], key='max_danger_input')
+
 
         if st.button('OK'):
             list_accommodation_id = danger_api.get_danger(st.session_state['min_danger'],st.session_state['max_danger'],to_list=True)
