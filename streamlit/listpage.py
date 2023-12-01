@@ -126,6 +126,9 @@ if selected == "Search":
 
 
 if selected == 'Airbnb Info':
+    if "list_accommodation_id" not in st.session_state:
+        st.session_state['list_accommodation_id'] = None
+
     if st.session_state['list_accommodation_id'] is not None:
         col1, col2 = st.columns(2)
         id = st.session_state['accommodation_id']

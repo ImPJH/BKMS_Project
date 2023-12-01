@@ -180,7 +180,7 @@ def crime_info(id, display_type):
         crime_add = pd.concat([crime_type_add, crime_count_add], axis=1)
         crime_type = pd.concat([crime_type, crime_add], axis=0).reset_index(drop=True)
 
-        st.subheader('# Crimes by Crime Type')
+        st.subheader('# Cases by Crime Type')
 
         for i in range(5):
             col1, col2, col3, col4 = st.columns(4)
@@ -226,19 +226,25 @@ def crime_info(id, display_type):
         
         # Gender
         if st.session_state.logged_in and gender == 'Female':
+            rate = (crime_sex.loc[crime_sex['vic_sex']=='F', 'count'] / sum(crime_sex['count'])).iloc[0]
+            col1.metric('Victim Sex', f'{(rate*100).round(2)} %')
+            col1.progress(rate)
             fig_sex = px.pie(crime_sex, values='count', names='vic_sex', color='vic_sex', color_discrete_map={'F':px.colors.qualitative.Pastel1[0], 'M':px.colors.qualitative.Set2[7], 'UNKNOWN':px.colors.qualitative.Pastel2[7]})
             fig_sex.update_traces(textposition='inside', textinfo='percent+label')
             fig_sex.update_layout(showlegend=False)
             # fig_sex.update_layout(legend={'title':'Sex'}, legend_yanchor='bottom', legend_y=0.01, legend_xanchor='left', legend_x=0.01, legend_orientation='v', legend_entrywidth=200)
-            col1.caption('Victim Sex')
+            # col1.caption('Victim Sex')
             col1.plotly_chart(fig_sex, use_container_width=True)
 
         elif st.session_state.logged_in and gender == 'Male':
+            rate = (crime_sex.loc[crime_sex['vic_sex']=='M', 'count'] / sum(crime_sex['count'])).iloc[0]
+            col1.metric('Victim Sex', f'{(rate*100).round(2)} %')
+            col1.progress(rate)            
             fig_sex = px.pie(crime_sex, values='count', names='vic_sex', color='vic_sex', color_discrete_map={'F':px.colors.qualitative.Set2[7], 'M':px.colors.qualitative.Pastel1[1], 'UNKNOWN':px.colors.qualitative.Pastel2[7]})
             fig_sex.update_traces(textposition='inside', textinfo='percent+label')
             fig_sex.update_layout(showlegend=False)
             # fig_sex.update_layout(legend={'title':'Sex'}, legend_yanchor='bottom', legend_y=0.01, legend_xanchor='left', legend_x=0.01, legend_orientation='v', legend_entrywidth=200)
-            col1.caption('Victim Sex')
+            # col1.caption('Victim Sex')
             col1.plotly_chart(fig_sex, use_container_width=True)
 
         else:
@@ -252,6 +258,9 @@ def crime_info(id, display_type):
         
 
         if st.session_state.logged_in and age < 18:
+            rate = (crime_age.loc[crime_age['vic_age_group']=='<18', 'count'] / sum(crime_age['count'])).iloc[0]
+            col2.metric('Victim Age Group', f'{(rate*100).round(2)} %')
+            col2.progress(rate)             
             fig_age = px.pie(crime_age, values='count', names='vic_age_group', color='vic_age_group', color_discrete_map={'<18': px.colors.qualitative.Set2[0], 
                                                                                                                           '18-24': px.colors.qualitative.Safe[10], 
                                                                                                                           '25-44': px.colors.qualitative.Set2[7], 
@@ -261,10 +270,13 @@ def crime_info(id, display_type):
             fig_age.update_traces(textposition='inside', textinfo='percent+label')
             fig_age.update_layout(showlegend=False)
             # fig_age.update_layout(legend={'title':'Age Group'}, legend_yanchor='bottom', legend_y=0.01, legend_xanchor='left', legend_x=0.01, legend_orientation='v', legend_entrywidth=200)
-            col2.caption('Victim Age Group')
+            # col2.caption('Victim Age Group')
             col2.plotly_chart(fig_age, use_container_width=True)
 
         elif st.session_state.logged_in and (age >= 18 and age <= 24):
+            rate = (crime_age.loc[crime_age['vic_age_group']=='18-24', 'count'] / sum(crime_age['count'])).iloc[0]
+            col2.metric('Victim Age Group', f'{(rate*100).round(2)} %')
+            col2.progress(rate)             
             fig_age = px.pie(crime_age, values='count', names='vic_age_group', color='vic_age_group', color_discrete_map={'<18': px.colors.qualitative.Safe[10], 
                                                                                                                           '18-24': px.colors.qualitative.Set2[1], 
                                                                                                                           '25-44': px.colors.qualitative.Set2[7], 
@@ -274,10 +286,13 @@ def crime_info(id, display_type):
             fig_age.update_traces(textposition='inside', textinfo='percent+label')
             fig_age.update_layout(showlegend=False)
             # fig_age.update_layout(legend={'title':'Age Group'}, legend_yanchor='bottom', legend_y=0.01, legend_xanchor='left', legend_x=0.01, legend_orientation='v', legend_entrywidth=200)
-            col2.caption('Victim Age Group')
+            # col2.caption('Victim Age Group')
             col2.plotly_chart(fig_age, use_container_width=True)
 
         elif st.session_state.logged_in and (age >= 25 and age <= 44):
+            rate = (crime_age.loc[crime_age['vic_age_group']=='25-44', 'count'] / sum(crime_age['count'])).iloc[0]
+            col2.metric('Victim Age Group', f'{(rate*100).round(2)} %')
+            col2.progress(rate)             
             fig_age = px.pie(crime_age, values='count', names='vic_age_group', color='vic_age_group', color_discrete_map={'<18': px.colors.qualitative.Safe[10], 
                                                                                                                           '18-24': px.colors.qualitative.Set2[7], 
                                                                                                                           '25-44': px.colors.qualitative.Set2[2], 
@@ -287,10 +302,13 @@ def crime_info(id, display_type):
             fig_age.update_traces(textposition='inside', textinfo='percent+label')
             fig_age.update_layout(showlegend=False)
             # fig_age.update_layout(legend={'title':'Age Group'}, legend_yanchor='bottom', legend_y=0.01, legend_xanchor='left', legend_x=0.01, legend_orientation='v', legend_entrywidth=200)
-            col2.caption('Victim Age Group')
+            # col2.caption('Victim Age Group')
             col2.plotly_chart(fig_age, use_container_width=True)
 
         elif st.session_state.logged_in and (age >= 45 and age <= 64):
+            rate = (crime_age.loc[crime_age['vic_age_group']=='45-64', 'count'] / sum(crime_age['count'])).iloc[0]
+            col2.metric('Victim Age Group', f'{(rate*100).round(2)} %')
+            col2.progress(rate)             
             fig_age = px.pie(crime_age, values='count', names='vic_age_group', color='vic_age_group', color_discrete_map={'<18': px.colors.qualitative.Safe[10], 
                                                                                                                           '18-24': px.colors.qualitative.Set2[7], 
                                                                                                                           '25-44': px.colors.qualitative.Pastel2[7], 
@@ -300,10 +318,13 @@ def crime_info(id, display_type):
             fig_age.update_traces(textposition='inside', textinfo='percent+label')
             fig_age.update_layout(showlegend=False)
             # fig_age.update_layout(legend={'title':'Age Group'}, legend_yanchor='bottom', legend_y=0.01, legend_xanchor='left', legend_x=0.01, legend_orientation='v', legend_entrywidth=200)
-            col2.caption('Victim Age Group')
+            # col2.caption('Victim Age Group')
             col2.plotly_chart(fig_age, use_container_width=True)
 
         elif st.session_state.logged_in and age >= 65:
+            rate = (crime_age.loc[crime_age['vic_age_group']=='65+', 'count'] / sum(crime_age['count'])).iloc[0]
+            col2.metric('Victim Age Group', f'{(rate*100).round(2)} %')
+            col2.progress(rate)             
             fig_age = px.pie(crime_age, values='count', names='vic_age_group', color='vic_age_group', color_discrete_map={'<18': px.colors.qualitative.Safe[10], 
                                                                                                                           '18-24': px.colors.qualitative.Set2[7], 
                                                                                                                           '25-44': px.colors.qualitative.Pastel2[7], 
@@ -313,7 +334,7 @@ def crime_info(id, display_type):
             fig_age.update_traces(textposition='inside', textinfo='percent+label')
             fig_age.update_layout(showlegend=False)
             # fig_age.update_layout(legend={'title':'Age Group'}, legend_yanchor='bottom', legend_y=0.01, legend_xanchor='left', legend_x=0.01, legend_orientation='v', legend_entrywidth=200)
-            col2.caption('Victim Age Group')
+            # col2.caption('Victim Age Group')
             col2.plotly_chart(fig_age, use_container_width=True)
 
         else:
@@ -327,17 +348,36 @@ def crime_info(id, display_type):
 
 
         # Race
-        fig_race = px.pie(crime_race, values='count', names='vic_race', color='vic_race', color_discrete_map={'WHITE HISPANIC':px.colors.qualitative.Safe[10], 
-                                                                                                              'UNKNOWN':px.colors.qualitative.Pastel1[8], 
-                                                                                                              'WHITE':px.colors.qualitative.Set2[7], 
-                                                                                                              'ASIAN PACIFIC ISLANDER':px.colors.qualitative.Set3[2],
-                                                                                                              'BLACK':px.colors.qualitative.Pastel2[7], 
-                                                                                                              'BLACK HISPANIC':px.colors.qualitative.Set3[8], 
-                                                                                                              'AMERICAN INDIAN ALASKAN NATIVE':px.colors.qualitative.Dark2[7]})
-        fig_race.update_traces(textposition='inside', textinfo='percent+label')
-        fig_race.update_layout(showlegend=False)
-        # fig_race.update_layout(legend={'title':'Race'}, legend_yanchor='bottom', legend_y=0.01, legend_xanchor='left', legend_x=0.01, legend_orientation='v', legend_entrywidth=200)
-        col3.caption('Victim Race')
-        col3.plotly_chart(fig_race, use_container_width=True)
+        if st.session_state.logged_in:
+            rate = (crime_race.loc[crime_race['vic_race']=='ASIAN PACIFIC ISLANDER', 'count'] / sum(crime_race['count'])).iloc[0]
+            col3.metric('Victim Age Group', f'{(rate*100).round(2)} %')
+            col3.progress(rate)             
+            fig_race = px.pie(crime_race, values='count', names='vic_race', color='vic_race', color_discrete_map={'WHITE HISPANIC':px.colors.qualitative.Safe[10], 
+                                                                                                                'UNKNOWN':px.colors.qualitative.Pastel1[8], 
+                                                                                                                'WHITE':px.colors.qualitative.Set2[7], 
+                                                                                                                'ASIAN PACIFIC ISLANDER':px.colors.qualitative.Set3[2],
+                                                                                                                'BLACK':px.colors.qualitative.Pastel2[7], 
+                                                                                                                'BLACK HISPANIC':px.colors.qualitative.Set3[8], 
+                                                                                                                'AMERICAN INDIAN ALASKAN NATIVE':px.colors.qualitative.Dark2[7]})
+            fig_race.update_traces(textposition='inside', textinfo='percent+label')
+            fig_race.update_layout(showlegend=False)
+            # fig_race.update_layout(legend={'title':'Race'}, legend_yanchor='bottom', legend_y=0.01, legend_xanchor='left', legend_x=0.01, legend_orientation='v', legend_entrywidth=200)
+            # col3.caption('Victim Race')
+            col3.plotly_chart(fig_race, use_container_width=True)
+        
+        else:
+            fig_race = px.pie(crime_race, values='count', names='vic_race', color='vic_race', color_discrete_map={'WHITE HISPANIC':px.colors.qualitative.Safe[10], 
+                                                                                                                'UNKNOWN':px.colors.qualitative.Pastel1[8], 
+                                                                                                                'WHITE':px.colors.qualitative.Set2[7], 
+                                                                                                                'ASIAN PACIFIC ISLANDER':px.colors.qualitative.Set3[2],
+                                                                                                                'BLACK':px.colors.qualitative.Pastel2[7], 
+                                                                                                                'BLACK HISPANIC':px.colors.qualitative.Set3[8], 
+                                                                                                                'AMERICAN INDIAN ALASKAN NATIVE':px.colors.qualitative.Dark2[7]})
+            fig_race.update_traces(textposition='inside', textinfo='percent+label')
+            fig_race.update_layout(showlegend=False)
+            # fig_race.update_layout(legend={'title':'Race'}, legend_yanchor='bottom', legend_y=0.01, legend_xanchor='left', legend_x=0.01, legend_orientation='v', legend_entrywidth=200)
+            col3.caption('Victim Race')
+            col3.plotly_chart(fig_race, use_container_width=True)
+
 
 
