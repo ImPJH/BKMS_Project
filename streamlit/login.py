@@ -178,28 +178,28 @@ def app():
 
             st.title('My Page')
             st.divider()
-            col1, _, _, _, _, _, col7, col8 = st.columns(8)
-            if col1.button('Update Info'):
-                st.session_state.page = 'update_info'
-                switch_page('login')
-            if col7.button('Logout'):
-                st.session_state.logged_in = False
-                st.session_state.username = None
-                st.session_state.page = 'login'
-                switch_page('login')
-            if col8.button('Main'):
-                switch_page('Main')
-
-
             
             st.metric('Username', f'👤 {user_name}')
             col1, col2, _, col4 = st.columns(4)
             col1.metric('Age', user_age)
             col2.metric('Gender', user_gender)
             col4.write()
-
-
+            
             st.divider()
+            col1, col2, _, _, _, _, col7, col8 = st.columns(8)
+            if col7.button('Update Info'):
+                st.session_state.page = 'update_info'
+                switch_page('login')
+            if col8.button('Logout'):
+                st.session_state.logged_in = False
+                st.session_state.username = None
+                st.session_state.page = 'login'
+                switch_page('login')
+            # if col3.button('Main'):
+            #     switch_page('Main')
+
+
+            # st.divider()
             st.header('Liked Airbnb')
 
             liked = likes.like_list(st.session_state.username)
