@@ -146,9 +146,11 @@ if selected == "Search":
 
 
     if loc_select=='Danger':
-        st.markdown("**:red[Danger의 기준]**")
-        st.markdown("→ Airbnb danger와 Precinct danger를 평균 낸 것 (0점~100점)")
-        st.markdown("\n")
+        # st.markdown("**:red[Danger의 기준]**")
+        # st.markdown("→ Airbnb danger와 Precinct danger를 평균 낸 것 (0점~100점)")
+        # st.markdown("\n")
+        st.write('Danger Scale')
+        st.image('photo/danger_scale2.png')
         if 'min_danger' not in st.session_state:
             st.session_state['min_danger'] = 0.0
         if 'max_danger' not in st.session_state:
@@ -165,6 +167,7 @@ if selected == "Search":
         #     st.session_state['min_danger'] = min_danger
         #     st.session_state['max_danger'] = max_danger
         # else:
+        
         col1, col2, col3 = st.columns([4.5,1,4.5])
         with col1:
             st.session_state['min_danger'] = st.number_input("🚨 Enter minimum danger : ", min_value = 0.0, max_value=100.0, 
