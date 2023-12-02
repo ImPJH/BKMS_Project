@@ -75,9 +75,9 @@ if selected == "Search":
 
     #neighbourhood, accommodation table 가져와서 필요한 column만 쓰는거 sql문으로 구현해야됨?
 
-    loc_select=st.radio('Type',['Location Search','Airbnb Name Search','Search by Price','Search by Danger'],horizontal=True, label_visibility="collapsed") 
+    loc_select=st.radio('Type',['Location','Airbnb Name','Price','Danger'],horizontal=True, label_visibility="collapsed") 
 
-    if loc_select=='Airbnb Name Search':
+    if loc_select=='Airbnb Name':
         text_input = st.text_input("Enter Your Airbnb name : ")
 
         if st.button('OK'):
@@ -91,7 +91,7 @@ if selected == "Search":
                 st.session_state['accommodation_id'] = name_id
                 switch_page('Listpage')
 
-    if loc_select=='Location Search':
+    if loc_select=='Location':
         if 'min_price' not in st.session_state:
             st.session_state['min_price'] = 10
         if 'max_price' not in st.session_state:
@@ -136,34 +136,34 @@ if selected == "Search":
     #         st.session_state['accommodation_id'] = None
     #         switch_page('Listpage')
 
-    if loc_select=='Search by Price':
+    if loc_select=='Price':
         if 'min_price' not in st.session_state:
-            st.session_state['min_price'] = 10
+            st.session_state['min_price'] = 0
         if 'max_price' not in st.session_state:
             st.session_state['max_price'] = 300
-        if 'input_type_price' not in st.session_state:
-            st.session_state['input_type_price'] = 'slider'
+        # if 'input_type_price' not in st.session_state:
+        #     st.session_state['input_type_price'] = 'slider'
 
-        input_type_price = st.selectbox("Choose your input type", ['slider', 'text'], index=['slider', 'text'].index(st.session_state['input_type_price']), key='input_type_price')
+        # input_type_price = st.selectbox("Choose your input type", ['slider', 'text'], index=['slider', 'text'].index(st.session_state['input_type_price']), key='input_type_price')
+
+        # if input_type_price == 'slider':
+        min_price, max_price = st.slider("💸 Select a range of price ($)", 0, 300, 
+                                        (st.session_state['min_price'], st.session_state['max_price']), 
+                                        key='price_range_slider')
+        st.session_state['min_price'] = min_price
+        st.session_state['max_price'] = max_price
+        # else:
+        #     col1, col2, col3 = st.columns([4.5,1,4.5])
+        #     with col1:
+        #         st.session_state['min_price'] = st.number_input("💸 Enter minimum price ($) : ", min_value = 10, max_value=300, 
+        #                                                         value=st.session_state['min_price'],key='min_price_input')
+        #     with col2:
+        #         st.write("\n")
+        #         st.markdown("**<center>~</center>**", unsafe_allow_html=True)
+        #     with col3:
+        #         st.session_state['max_price'] = st.number_input("💸 Enter maximum price ($) : ", min_value = 10, max_value=300, 
+        #                                                         value=st.session_state['max_price'],key='max_price_input')
         order_by = st.selectbox("Order by", ['Danger', 'Price'], index=0, key='order_by')
-
-        if input_type_price == 'slider':
-            min_price, max_price = st.slider("💸 Select a range of price ($)", 10, 300, 
-                                            (st.session_state['min_price'], st.session_state['max_price']), 
-                                            key='price_range_slider')
-            st.session_state['min_price'] = min_price
-            st.session_state['max_price'] = max_price
-        else:
-            col1, col2, col3 = st.columns([4.5,1,4.5])
-            with col1:
-                st.session_state['min_price'] = st.number_input("💸 Enter minimum price ($) : ", min_value = 10, max_value=300, 
-                                                                value=st.session_state['min_price'],key='min_price_input')
-            with col2:
-                st.write("\n")
-                st.markdown("**<center>~</center>**", unsafe_allow_html=True)
-            with col3:
-                st.session_state['max_price'] = st.number_input("💸 Enter maximum price ($) : ", min_value = 10, max_value=300, 
-                                                                value=st.session_state['max_price'],key='max_price_input')
 
         if st.button('OK'):
             list_accommodation_id = price_api.get_price(st.session_state['min_price'],st.session_state['max_price'], order_by, to_list=True)
@@ -196,7 +196,7 @@ if selected == "Search":
     #         st.session_state['accommodation_id'] = None
     #         switch_page('Listpage')
 
-    if loc_select=='Search by Danger':
+    if loc_select=='Danger':
         st.markdown("**:red[Danger의 기준]**")
         st.markdown("→ Airbnb danger와 Precinct danger를 평균 낸 것 (0점~100점)")
         st.markdown("\n")
@@ -204,28 +204,28 @@ if selected == "Search":
             st.session_state['min_danger'] = 0.0
         if 'max_danger' not in st.session_state:
             st.session_state['max_danger'] = 100.0
-        if 'input_type' not in st.session_state:
-            st.session_state['input_type'] = 'slider'
+        # if 'input_type' not in st.session_state:
+        #     st.session_state['input_type'] = 'slider'
 
-        input_type = st.selectbox("Choose your input type", ['slider', 'text'], index=['slider', 'text'].index(st.session_state['input_type']), key='input_type')
+        # input_type = st.selectbox("Choose your input type", ['slider', 'text'], index=['slider', 'text'].index(st.session_state['input_type']), key='input_type')
 
-        if input_type == 'slider':
-            min_danger, max_danger = st.slider("🚨 Select a range of danger", 0.0, 100.0, 
-                                            (st.session_state['min_danger'], st.session_state['max_danger']), 
-                                            key='danger_range_slider')
-            st.session_state['min_danger'] = min_danger
-            st.session_state['max_danger'] = max_danger
-        else:
-            col1, col2, col3 = st.columns([4.5,1,4.5])
-            with col1:
-                st.session_state['min_danger'] = st.number_input("🚨 Enter minimum danger : ", min_value = 0.0, max_value=100.0, 
-                                                            value=st.session_state['min_danger'], key='min_danger_input')
-            with col2:
-                st.write("\n")
-                st.markdown("**<center>~</center>**", unsafe_allow_html=True)
-            with col3:
-                st.session_state['max_danger'] = st.number_input("🚨 Enter maximum danger : ", min_value = 0.0, max_value=100.0, 
-                                                            value=st.session_state['max_danger'], key='max_danger_input')
+        # if input_type == 'slider':
+        #     min_danger, max_danger = st.slider("🚨 Select a range of danger", 0.0, 100.0, 
+        #                                     (st.session_state['min_danger'], st.session_state['max_danger']), 
+        #                                     key='danger_range_slider')
+        #     st.session_state['min_danger'] = min_danger
+        #     st.session_state['max_danger'] = max_danger
+        # else:
+        col1, col2, col3 = st.columns([4.5,1,4.5])
+        with col1:
+            st.session_state['min_danger'] = st.number_input("🚨 Enter minimum danger : ", min_value = 0.0, max_value=100.0, 
+                                                        value=st.session_state['min_danger'], key='min_danger_input')
+        with col2:
+            st.write("\n")
+            st.markdown("**<center>~</center>**", unsafe_allow_html=True)
+        with col3:
+            st.session_state['max_danger'] = st.number_input("🚨 Enter maximum danger : ", min_value = 0.0, max_value=100.0, 
+                                                        value=st.session_state['max_danger'], key='max_danger_input')
 
 
         if st.button('OK'):
