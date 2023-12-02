@@ -92,49 +92,18 @@ if selected == "Search":
                 switch_page('Listpage')
 
     if loc_select=='Location':
-        if 'min_price' not in st.session_state:
-            st.session_state['min_price'] = 10
-        if 'max_price' not in st.session_state:
-            st.session_state['max_price'] = 300
-
         group_list = neighbourhood_api.get_distinct_neighbourhood_group(to_list=True)
         neighbourhood_group_select = st.selectbox(label='Borough',options=['Borough']+group_list, label_visibility='collapsed')
 
         neighbourhood_list = neighbourhood_api.get_neighbourhood_in_neighbourhood_group(neighbourhood_group_select,to_list=True)
         neighbourhood_select = st.selectbox(label='Neighbourhood',options=['Neighbourhood']+neighbourhood_list, label_visibility='collapsed')
         
-        # with st.expander('Select price range'):
-        #     min_price, max_price = st.slider("💸 Select a range of price ($)", 0, 300, 
-        #                                 (st.session_state['min_price'], st.session_state['max_price']), 
-        #                                 key='price_range_slider')
-        # # st.session_state['min_price'] = min_price
-        # # st.session_state['max_price'] = max_price
-
         if st.button('OK'):
             list_accommodation_id = neighbourhood_api.get_accommodation_id_by_neighbourhoods(neighbourhood_select,neighbourhood_group_select,min_price, max_price, to_list=True)
             st.session_state['list_accommodation_id'] = list_accommodation_id
             st.session_state['accommodation_id'] = None
             switch_page('Listpage')
     
-    # if loc_select=='Search by Price':
-        
-    #     if 'min_price' not in st.session_state:
-    #         st.session_state['min_price'] = 10
-    #     if 'max_price' not in st.session_state:
-    #         st.session_state['max_price'] = 300
-        
-    #     st.session_state['min_price'] = st.number_input("💸 Enter minimum price (unit:💲) : ", min_value = 10, max_value=300, 
-    #                                                     value=st.session_state['min_price'],key='min_price_input')
-    #     st.session_state['max_price'] = st.number_input("💸 Enter maximum price (unit:💲) : ", min_value = 10, max_value=300, 
-    #                                                     value=st.session_state['max_price'],key='max_price_input')
-        
-    #     st.session_state['min_price'], st.session_state['max_price'] = st.slider("Or, Select a range of price", 10, 300, 
-    #                                      (st.session_state['min_price'], st.session_state['max_price']), key = 'price_range_slider')
-    #     if st.button('OK'):
-    #         list_accommodation_id = price_api.get_price(st.session_state['min_price'],st.session_state['max_price'],to_list=True)
-    #         st.session_state['list_accommodation_id'] = list_accommodation_id
-    #         st.session_state['accommodation_id'] = None
-    #         switch_page('Listpage')
 
     if loc_select=='Price':
         if 'min_price' not in st.session_state:
@@ -175,26 +144,6 @@ if selected == "Search":
                 switch_page('Listpage')
 
 
-
-    # if loc_select=='Search by Danger':
-        
-    #     if 'min_danger' not in st.session_state:
-    #         st.session_state['min_danger'] = 0.0
-    #     if 'max_danger' not in st.session_state:
-    #         st.session_state['max_danger'] = 100.0
-        
-    #     st.session_state['min_danger'] = st.number_input("🚨 Enter minimum danger : ", min_value = 0.0, max_value=100.0, 
-    #                                                     value=st.session_state['min_danger'],key='min_danger_input')
-    #     st.session_state['max_danger'] = st.number_input("🚨 Enter maximum danger : ", min_value = 0.0, max_value=100.0, 
-    #                                                     value=st.session_state['max_danger'],key='max_danger_input')
-        
-    #     st.session_state['min_danger'], st.session_state['max_danger'] = st.slider("Or, Select a range of danger", 0.0, 100.0, 
-    #                                      (st.session_state['min_danger'], st.session_state['max_danger']), key = 'price_range_slider')
-    #     if st.button('OK'):
-    #         list_accommodation_id = danger_api.get_danger(st.session_state['min_danger'],st.session_state['max_danger'],to_list=True)
-    #         st.session_state['list_accommodation_id'] = list_accommodation_id
-    #         st.session_state['accommodation_id'] = None
-    #         switch_page('Listpage')
 
     if loc_select=='Danger':
         st.markdown("**:red[Danger의 기준]**")
