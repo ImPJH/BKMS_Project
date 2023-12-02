@@ -78,8 +78,8 @@ if selected == "Search":
     loc_select=st.radio('Type',['Location Search','Airbnb Name Search','Search by Price','Search by Danger'],horizontal=True, label_visibility="collapsed") 
 
     if loc_select=='Airbnb Name Search':
-        #text로 검색하는 부분 구현해야됨
         text_input = st.text_input("Enter Your Airbnb name : ")
+
         if st.button('OK'):
             if text_input:
                 name_id, name_list = name_api.search_from_name(text_input)
@@ -92,13 +92,25 @@ if selected == "Search":
                 switch_page('Listpage')
 
     if loc_select=='Location Search':
+        if 'min_price' not in st.session_state:
+            st.session_state['min_price'] = 10
+        if 'max_price' not in st.session_state:
+            st.session_state['max_price'] = 300
+
         group_list = neighbourhood_api.get_distinct_neighbourhood_group(to_list=True)
         neighbourhood_group_select = st.selectbox(label='Borough',options=['Borough']+group_list, label_visibility='collapsed')
 
         neighbourhood_list = neighbourhood_api.get_neighbourhood_in_neighbourhood_group(neighbourhood_group_select,to_list=True)
         neighbourhood_select = st.selectbox(label='Neighbourhood',options=['Neighbourhood']+neighbourhood_list, label_visibility='collapsed')
+        
+        min_price, max_price = st.slider("💸 Select a range of price ($)", 10, 300, 
+                                        (st.session_state['min_price'], st.session_state['max_price']), 
+                                        key='price_range_slider')
+        # st.session_state['min_price'] = min_price
+        # st.session_state['max_price'] = max_price
+
         if st.button('OK'):
-            list_accommodation_id = neighbourhood_api.get_accommodation_id_by_neighbourhoods(neighbourhood_select,neighbourhood_group_select,to_list=True)
+            list_accommodation_id = neighbourhood_api.get_accommodation_id_by_neighbourhoods(neighbourhood_select,neighbourhood_group_select,min_price, max_price, to_list=True)
             st.session_state['list_accommodation_id'] = list_accommodation_id
             st.session_state['accommodation_id'] = None
             switch_page('Listpage')
@@ -132,9 +144,10 @@ if selected == "Search":
             st.session_state['input_type_price'] = 'slider'
 
         input_type_price = st.selectbox("Choose your input type", ['slider', 'text'], index=['slider', 'text'].index(st.session_state['input_type_price']), key='input_type_price')
+        order_by = st.selectbox("Order by", ['Danger', 'Price'], index=0, key='order_by')
 
         if input_type_price == 'slider':
-            min_price, max_price = st.slider("💸 Select a range of price (unit:💲)", 10, 300, 
+            min_price, max_price = st.slider("💸 Select a range of price ($)", 10, 300, 
                                             (st.session_state['min_price'], st.session_state['max_price']), 
                                             key='price_range_slider')
             st.session_state['min_price'] = min_price
@@ -142,17 +155,17 @@ if selected == "Search":
         else:
             col1, col2, col3 = st.columns([4.5,1,4.5])
             with col1:
-                st.session_state['min_price'] = st.number_input("💸 Enter minimum price (unit:💲) : ", min_value = 10, max_value=300, 
+                st.session_state['min_price'] = st.number_input("💸 Enter minimum price ($) : ", min_value = 10, max_value=300, 
                                                                 value=st.session_state['min_price'],key='min_price_input')
             with col2:
                 st.write("\n")
                 st.markdown("**<center>~</center>**", unsafe_allow_html=True)
             with col3:
-                st.session_state['max_price'] = st.number_input("💸 Enter maximum price (unit:💲) : ", min_value = 10, max_value=300, 
+                st.session_state['max_price'] = st.number_input("💸 Enter maximum price ($) : ", min_value = 10, max_value=300, 
                                                                 value=st.session_state['max_price'],key='max_price_input')
 
         if st.button('OK'):
-            list_accommodation_id = price_api.get_price(st.session_state['min_price'],st.session_state['max_price'],to_list=True)
+            list_accommodation_id = price_api.get_price(st.session_state['min_price'],st.session_state['max_price'], order_by, to_list=True)
             if not list_accommodation_id:
                 st.write("해당 범위에는 숙소가 존재하지 않습니다.")
             else:
