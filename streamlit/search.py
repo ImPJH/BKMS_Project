@@ -103,12 +103,12 @@ if selected == "Search":
         neighbourhood_list = neighbourhood_api.get_neighbourhood_in_neighbourhood_group(neighbourhood_group_select,to_list=True)
         neighbourhood_select = st.selectbox(label='Neighbourhood',options=['Neighbourhood']+neighbourhood_list, label_visibility='collapsed')
         
-        with st.expander('Select price range'):
-            min_price, max_price = st.slider("💸 Select a range of price ($)", 0, 300, 
-                                        (st.session_state['min_price'], st.session_state['max_price']), 
-                                        key='price_range_slider')
-        # st.session_state['min_price'] = min_price
-        # st.session_state['max_price'] = max_price
+        # with st.expander('Select price range'):
+        #     min_price, max_price = st.slider("💸 Select a range of price ($)", 0, 300, 
+        #                                 (st.session_state['min_price'], st.session_state['max_price']), 
+        #                                 key='price_range_slider')
+        # # st.session_state['min_price'] = min_price
+        # # st.session_state['max_price'] = max_price
 
         if st.button('OK'):
             list_accommodation_id = neighbourhood_api.get_accommodation_id_by_neighbourhoods(neighbourhood_select,neighbourhood_group_select,min_price, max_price, to_list=True)
