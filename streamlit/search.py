@@ -99,7 +99,7 @@ if selected == "Search":
         neighbourhood_select = st.selectbox(label='Neighbourhood',options=['Neighbourhood']+neighbourhood_list, label_visibility='collapsed')
         
         if st.button('OK'):
-            list_accommodation_id = neighbourhood_api.get_accommodation_id_by_neighbourhoods(neighbourhood_select,neighbourhood_group_select,min_price, max_price, to_list=True)
+            list_accommodation_id = neighbourhood_api.get_accommodation_id_by_neighbourhoods(neighbourhood_select,neighbourhood_group_select,to_list=True)
             st.session_state['list_accommodation_id'] = list_accommodation_id
             st.session_state['accommodation_id'] = None
             switch_page('Listpage')
