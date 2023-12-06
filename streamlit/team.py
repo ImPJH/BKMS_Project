@@ -72,7 +72,7 @@ if selected == "Team":
         col1.write('')
         col1.subheader('김서린')
         col1.write('M.S. Student @ SNU GSDS')
-        col1.write('Contribution : DB Construction')
+        col1.write('Contribution : DB Construction, Backend')
         col2.image('./photo/sr.png', width = 300)
         image_url = "https://cdn-icons-png.flaticon.com/512/25/25231.png"
         github_url = "https://github.com/Seorin-Kim"
