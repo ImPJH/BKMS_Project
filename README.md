@@ -4,7 +4,7 @@
 
 ![Main Screenshot](https://github.com/ImPJH/BKMS_Project/assets/86909645/0e7ad584-51bc-434e-85ce-bd2a954a326b)
 
-Welcome to "For Your Safe Journey"! This tool is designed to help you find safe Airbnb accommodations that meet your specific requirements. Whether you prioritize security, cleanliness, or other factors, our tool aims to make your journey worry-free.
+Welcome to "**For Your Safe Journey**"! This tool is designed to help you find safe Airbnb accommodations that meet your specific requirements. Whether you prioritize security, cleanliness, or other factors, our tool aims to make your journey worry-free.
 
 ### Installation
 
@@ -14,7 +14,7 @@ To run the tool locally, follow these steps:
    ```bash
    conda install -c conda-forge gdal
    ```
-2. Install Python packages:
+2. Install Python packages:
    ```bash
    pip install --no-deps -r requirements.txt
    ```
@@ -27,9 +27,9 @@ This will launch the application, and you can access it through your web browser
 
 ### Features
 
-- Safe Accommodation Search: Easily find safe Airbnb accommodations based on your preferences.
-- Detailed Information: Access detailed information about each listing, including safety ratings and reviews.
-- User-Friendly Interface: Intuitive and user-friendly design for a seamless experience.
+- **Safe Accommodation Search**: Easily find safe Airbnb accommodations based on your preferences.
+- **Detailed Information**: Access detailed information about each listing, including safety ratings and reviews.
+- **User-Friendly Interface**: Intuitive and user-friendly design for a seamless experience.
 
 ### Contributing
 We welcome contributions from the community! If you find a bug or have a feature request, please open an issue. Pull requests are also encouraged.
