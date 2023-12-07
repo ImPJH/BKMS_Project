@@ -34,8 +34,6 @@ This will launch the application, and you can access it through your web browser
 ### Contributing
 We welcome contributions from the community! If you find a bug or have a feature request, please open an issue. Pull requests are also encouraged.
 
-### License
-This project is licensed under the MIT License.
 
 ---
 Happy and safe travels!
