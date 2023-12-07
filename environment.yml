@@ -53,7 +53,7 @@ dependencies:
   - expat=2.5.0
   - fastavro=1.9.0
   - fiona=1.9.5
-  - folium=0.15.0
+  - folium=0.15.0 --install-option=="--no-dep"
   - font-ttf-dejavu-sans-mono=2.37
   - font-ttf-inconsolata=3.000
   - font-ttf-source-code-pro=2.038
@@ -287,7 +287,7 @@ dependencies:
   - pip:
       - bcrypt==4.0.1
       - beautifulsoup4==4.12.2
-      - branca==0.3.1
+      - branca==0.3.1 --install-option=="--no-dep"
       - certifi==2023.7.22
       - entrypoints==0.4
       - et-xmlfile==1.1.0
