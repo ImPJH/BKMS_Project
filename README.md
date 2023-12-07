@@ -35,4 +35,4 @@ This will launch the application, and you can access it through your web browser
 We welcome contributions from the community! If you find a bug or have a feature request, please open an issue. Pull requests are also encouraged.
 
 
-> _**Happy and safe travels!**_
+> ### _Happy and safe travels!_
