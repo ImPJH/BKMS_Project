@@ -4,7 +4,7 @@
 
 ![Main Screenshot](https://github.com/ImPJH/BKMS_Project/assets/86909645/0e7ad584-51bc-434e-85ce-bd2a954a326b)
 
-Welcome to "**✈️ For Your Safe Journey**"! This tool is designed to help you find safe Airbnb accommodations that meet your specific requirements. Whether you prioritize security, cleanliness, or other factors, our tool aims to make your journey worry-free. Especially for your utmost safety, our service provides you with **danger analysis** results. Wishing you a happy and secure journey with us!✨🗽
+Welcome to "**✈️ For Your Safe Journey**"! This tool is designed to help you find safe Airbnb accommodations that meet your specific requirements. Whether you prioritize security, cleanliness, or other factors, our tool aims to make your journey worry-free. Especially for your utmost safety, our service provides you with **danger analysis** results. Wishing you a happy and secure journey with us!🗽✨
 
 ### Installation
 
@@ -35,5 +35,4 @@ This will launch the application, and you can access it through your web browser
 We welcome contributions from the community! If you find a bug or have a feature request, please open an issue. Pull requests are also encouraged.
 
 
----
-Happy and safe travels!
+> _**Happy and safe travels!**_
